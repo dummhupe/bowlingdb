@@ -1,0 +1,12 @@
+<table style="border: 0px;">
+  <% @players.each do |player| %>
+    <tr>
+      <td><%= player.full_name %></td>
+      <td><%= link_to 'Bearbeiten', edit_admin_player_path(player)%></td>
+      <td><%= link_to 'Löschen', [:admin, player], :method => :delete %></td>
+    </tr>
+  <% end %>
+  <tr>
+    <td colspan="10" style="text-align: right;"><%= link_to "Neuer Spieler", :action => :new %></td>
+  </tr>
+</table>

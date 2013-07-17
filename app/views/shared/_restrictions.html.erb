@@ -1,0 +1,39 @@
+<%= form_tag "/#{controller_name}/#{action_name}", :method => :get do %>
+  <h1>Ergebnisse einschränken</h1>
+  <table style="margin-bottom: 20px;">
+    <tr class="header">
+      <th>Spieler</th>
+      <th>Spielorte</th>
+      <th>Kategorien</th>
+      <th>Spieltage</th>
+    </tr>
+    <tr>
+      <td class="item">
+        <%= select_tag(:player, options_for_select(Player.players_for_selection, @player_restrictions), { :multiple => true, :size => 10 }) %>
+      </td>
+      <td class="item">
+        <%= select_tag(:location, options_for_select(Location.locations_for_selection, @location_restrictions), { :multiple => true, :size => 10 }) %>
+      </td>
+      <td class="item">
+        <%= select_tag(:category, options_for_select(Category.categories_for_selection, @category_restrictions), { :multiple => true, :size => 10 }) %>
+      </td>
+      <td class="item">
+         <%= radio_button_tag(:date_mode, :none, @date_mode == 'none') %>Alle Spieltermine<br/>
+         <%= radio_button_tag(:date_mode, :year, @date_mode == 'year') %>Letztes Jahr<br/>
+         <%= radio_button_tag(:date_mode, :halfyear, @date_mode == 'halfyear') %>Letztes Halbjahr<br/>
+         <%= radio_button_tag(:date_mode, :quarter, @date_mode == 'quarter') %>Letztes Quartal<br/>
+         <%= radio_button_tag(:date_mode, :exact, @date_mode == 'exact') %>
+         <%= select_tag(:date_from, options_for_select(MatchDay.order(:match_day).map { |d| [d.formatted_match_day, d.id] }, @date_from_restriction.id)) %>
+	 -
+	 <%= select_tag(:date_to, options_for_select(MatchDay.order(:match_day).map { |d| [d.formatted_match_day, d.id] }, @date_to_restriction.id)) %>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="10">
+        <%= submit_tag 'Übernehmen' %>
+	&nbsp;&nbsp;&nbsp;
+	<%= submit_tag 'Zurücksetzen', :name => 'reset' %>
+      </td>
+    </tr>
+  </table>
+<% end %>

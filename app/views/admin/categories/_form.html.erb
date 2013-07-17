@@ -1,0 +1,23 @@
+<%= form_for [:admin, @category] do |f| %>
+  <% if @category.errors.any? %>
+    <div id="errorExplanation">
+      <% @category.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </div>
+  <% end %>
+
+  <table style="border: 0px;">
+    <tr>
+      <td><%= f.label :name %></td>
+      <td><%= f.text_field :name %></td>
+    </tr>
+    <tr>
+      <td colspan="2" style="text-align: center;">
+        <%= f.submit 'Speichern' %>
+	&nbsp;&nbsp;&nbsp;
+	<%= link_to 'Abbrechen', admin_categories_path %>
+      </td>
+    </tr>
+  </table>
+<% end %>				    

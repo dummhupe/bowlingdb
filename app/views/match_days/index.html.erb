@@ -1,0 +1,16 @@
+<%= will_paginate @match_days %>
+
+<table>
+  <tr class="header">
+    <th>Datum</th>
+    <th>Ort</th>
+    <th>Kategorie</th>
+  </tr>
+  <% @match_days.each do |match| %>
+    <tr>
+      <td class="cell"><%= link_to match.formatted_match_day, match_day_path(match) %></td>
+      <td class="cell"><%= match.location.name %></td>
+      <td class="cell"><%= match.category.name %></td>
+    </tr>
+  <% end %>
+</table>

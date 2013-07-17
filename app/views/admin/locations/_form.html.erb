@@ -1,0 +1,23 @@
+<%= form_for [:admin, @location] do |f| %>
+  <% if @location.errors.any? %>
+    <div id="errorExplanation">
+      <% @location.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </div>
+  <% end %>
+
+  <table style="border: 0px;">
+    <tr>
+      <td><%= f.label :name %></td>
+      <td><%= f.text_field :name %></td>
+    </tr>
+    <tr>
+      <td colspan="2" style="text-align: center;">
+        <%= f.submit 'Speichern' %>
+	&nbsp;&nbsp;&nbsp;
+        <%= link_to 'Abbrechen', :back %>
+      </td>
+    </tr>
+  </table>
+<% end %>				    

@@ -1,0 +1,14 @@
+<table style="border: 0px;">
+  <% @locations.each do |location| %>
+    <tr>
+      <td><%= location.name %></td>
+      <td><%= link_to 'Bearbeiten', edit_admin_location_path(location) %></td>
+      <td><%= link_to 'Löschen', [:admin, location], :method => :delete %></td>
+    </tr>
+  <% end %>
+  <tr>
+    <td colspan="10" style="text-align: right;">
+      <%= link_to "Neuer Spielort", :action => :new %>
+    </td>
+  </tr>
+</table>

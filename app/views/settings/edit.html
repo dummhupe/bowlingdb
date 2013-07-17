@@ -1,0 +1,36 @@
+<h1>Grafiken</h1>
+<%= form_tag "/#{controller_name}/#{action_name}", :method => :get do %>
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+    <th>Default</th>
+    <th>Minimum</th>
+    <th>Maximum</th>
+  </tr>
+  <tr>
+    <td>Höhe der Grafiken (in px)</td>
+    <td><%= text_field_tag :graphics_height, @graphics_height, :size => 5 %></td>
+    <td class="cell">400</td>
+    <td class="cell">100</td>
+    <td class="cell">&ndash;</td>
+  </tr>
+  <tr>
+    <td>Anzahl Polynome für Ausgleichskurve</td>
+    <td><%= text_field_tag :polynom_degree, @polynom_degree, :size => 2 %></td>
+    <td class="cell">4</td>
+    <td class="cell">1</td>
+    <td class="cell">9</td>
+  </tr>
+  <tr>
+    <td>Anzahl Punkte für Ausgleichskurve</td>
+    <td><%= text_field_tag :polynom_resolution, @polynom_resolution, :size => 4 %></td>
+    <td class="cell">100</td>
+    <td class="cell">20</td>
+    <td class="cell">200</td>
+  </tr>
+  <tr colspan="10">
+    <td><%= submit_tag 'Übernehmen' %></td>
+  </tr>
+</table>
+<% end %>

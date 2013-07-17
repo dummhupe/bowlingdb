@@ -1,0 +1,248 @@
+body{
+  font-size: 1em;
+  background-color: #EEEEEE;
+  font-family: Verdana, Arial, sans-serif;
+}
+
+a{
+  color: #222222;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+p {
+  width: 600px;
+}
+
+#menu ul {
+  position: relative;
+  float: left;
+  padding: 0;
+  margin-bottom: 3em; 
+  list-style: none;
+  line-height: 1.7em;
+
+  li {
+    float: left;
+    margin: 0;
+  }
+
+  a {
+    display: block;
+    color: black;
+    text-decoration: none;
+    background: #BBBBBB;
+    margin: 0;
+    padding: 0.25em 1em;
+    border-left: 1px solid #fff;
+    border-top: 1px solid #fff;
+    border-right: 1px solid #aaa;
+  }
+
+  a:hover, a:active, a.selected:link, a.selected:visited {
+    color: #990000;
+    background: #CCCCCC;
+  }
+  a.selected:link, a.selected:visited {
+    position: relative;
+    z-index: 102;
+  }
+
+  ul {
+    position: absolute;
+    left: 1px;
+    top: 2.2em;
+    float: left;
+    background: #CCCCCC;
+    width: 100%;
+    margin: 0;
+    padding: 0.25em 0.25em 0.3em 1em;
+    list-style: none;
+    border-top: 1px solid #FFFFFF;
+
+    li {
+      float: left;
+      display: block;
+      margin-top: 1px;
+    }
+
+    a {
+      background: #CCCCCC;
+      color: black;
+      display: inline;
+      margin: 0;
+      padding: 0 1em;
+      border: 0;
+    }
+
+    a:hover, a:active, a.selected:link, a.selected:visited {
+      color: #990000;
+    }
+  }
+}
+
+.new {
+  padding-bottom: 10px;
+  text-align: right;
+}
+
+th.title {
+  text-align: left;
+}
+
+.pagination {
+  margin-bottom: 20px;
+}
+
+#content{
+  margin-left: 10px; 
+  clear: both;
+}
+
+h1{
+	color: #000000;
+	font-size: 1em;
+	font-weight: bold;
+}
+
+table{
+	border: 2px solid black;
+	border-collapse: collapse;
+}
+
+tr.header{
+	background-color: #E6E6E6;
+	border-bottom: 1px solid black;
+}
+
+tr.hseparated{
+	border-bottom: 1px solid black;
+}
+
+tr.overallScore{
+	border-left-style: hidden;
+	border-right-style: hidden;
+	border-top: 2px solid black;
+}
+
+tr.overallScore td{
+	border-bottom-style: hidden;
+}
+
+tr.overallScore td.overallScore{
+	font-weight: bold;
+	text-align: center;
+	border: 2px solid black;
+}
+
+.label{
+	font-weight: bold;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+.item{
+	padding-right: 1em;
+}
+
+th{
+	color: #000000;
+	font-size: 0.9em;
+	font-weight: bold;
+	padding-left: 0.2em;
+	padding-right: 0.2em;
+}
+
+td.cell{
+	padding-left: 1em;
+	padding-right: 1em;
+	height: 1.4em;
+}
+
+td.player{
+	font-weight: bold;
+	height: 1.4em;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+td.throw1{
+	text-align: center;
+	width: 1em;
+	border-left: 1px solid black;
+	padding-left: 1em;
+}
+
+td.throw2{
+	text-align: center;
+	width: 1em;
+	padding-right: 1em;
+}
+
+td.throw2.lastframe{
+	padding-right: 0;
+}
+
+td.throw3{
+	text-align: center;
+	width: 1em;
+	padding-right: 1em;
+}
+
+td.result{
+	text-align: center;
+	font-weight: bold;
+	text-align: right;
+	border-left: 1px solid black;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+td.points{
+	text-align: right;
+}
+
+td.aggregated{
+	text-align: center;
+}
+
+td.normal{
+}
+
+td.foul{
+	color: #FF0000;
+	font-weight: bold;
+}
+
+td.split{
+	background-image: url(split.gif);
+	background-repeat: no-repeat;
+	background-position: 1em;
+	color: blue;
+}
+
+td.split.lastframe.throw1{
+	background-image: url(split.gif);
+	background-repeat: no-repeat;
+	background-position: 1em;
+	color: blue;
+}
+
+td.split.lastframe{
+	background-image: url(split.gif);
+	background-repeat: no-repeat;
+	background-position: 0em;
+	color: blue;
+}
+
+td.spare{
+	color: #FF0000;
+	font-weight: bold;
+}
+
+td.strike{
+	color: #FF0000;
+	font-weight: bold;
+}
+
+

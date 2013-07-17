@@ -1,0 +1,30 @@
+<%= form_for [:admin, @match_day] do |f| %>
+  <% if @match_day.errors.any? %>
+    <div id="errorExplanation">
+      <%= @match_day.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </div>
+  <% end %>
+
+  <table style="border: 0px;">
+    <tr>
+      <td>Datum</td>
+      <td><%= f.date_select :match_day %></td>
+    </tr>
+    <tr>
+      <td>Beschreibung</td>
+      <td><%= select :match_objects, :category, Category.categories_for_selection %></td>
+    </tr>
+    <tr>
+      <td>Ort</td>
+      <td><%= select :match_objects, :location, Location.locations_for_selection %></td>
+    </tr>
+    <tr>
+      <td colspan="3" style="text-align: center;">
+        <%= f.submit 'Speichern' %>
+	&nbsp;&nbsp;&nbsp;
+	<%= link_to 'Abbrechen', admin_match_days_path %>
+    </tr>
+  </table>
+<% end %>

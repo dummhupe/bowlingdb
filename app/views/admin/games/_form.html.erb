@@ -1,0 +1,79 @@
+<%= form_for [:admin, @game.match_day, @game] do |f| %>
+  <% if @game.errors.any? %>
+    <div id="errorExplanation">
+      <% @game.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%= hidden_field :game_objects, :match_day, { :value => @game.match_day.id } %>
+  <table style="margin-bottom: 20px;">
+    <tr>
+      <th>Spieltag</th>
+      <td><%= @game.match_day.match_day %></td>
+    </tr>
+    <tr>
+      <th>Kategorie</th>
+      <td><%= @game.match_day.category.name %></td>
+    </tr>
+    <tr>
+      <th>Spielort</th>
+      <td><%= @game.match_day.location.name %></td>
+    </tr>
+    <tr>
+      <th>Spieler</th>
+      <td><%= select :game_objects, :player, Player.players_for_selection, { :selected => @game.player.id } %></td>
+    </tr>
+    <tr>
+      <th>Spielnummer</th>
+      <td><%= f.select :number, Game.numbers_for_selection(@game.match_day) %></td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <% 9.times do |i| %>
+        <th colspan="2">Frame <%= i+1 %></th>
+      <% end %>
+      <th colspan="3">Frame 10</th>
+      <th>Ergebnis</th>
+    </tr>
+    <tr>
+      <% 9.times do |i| %>
+        <td>
+	  <%= f.text_field "frame0#{i+1}_result1", result_text_field_options %>
+	  <br/>
+          <%= f.select "frame0#{i+1}_state1", Game.states_for_throw1_selection, { :include_blank => true, :selected => @game.send("frame0#{i+1}_state1") } %>
+	</td>
+	<td>
+	  <%= f.text_field "frame0#{i+1}_result2", result_text_field_options %>
+	  <br/>
+	  <%= f.select "frame0#{i+1}_state2", Game.states_for_throw2_selection, { :include_blank => true, :selected => @game.send("frame0#{i+1}_state2") } %>
+	</td>
+      <% end %>
+      <td>
+        <%= f.text_field :frame10_result1, result_text_field_options %>
+	<br/>
+	<%= f.select :frame10_state1, Game.states_for_throw1_selection, { :include_blank => true, :selected => @game.frame10_state1 } %>
+      </td>
+      <td>
+	<%= f.text_field :frame10_result2, result_text_field_options %>
+	<br/>
+	<%= f.select :frame10_state2, Game.states_for_frame10_selection, { :include_blank => true, :selected => @game.frame10_state2 } %>
+      </td>
+      <td>
+	<%= f.text_field :frame10_result3, result_text_field_options %>
+	<br/>
+	<%= f.select :frame10_state3, Game.states_for_frame10_selection, { :include_blank => true, :selected => @game.frame10_state3 } %>
+      </td>
+      <td><%= @game.points %></td>
+    </tr>
+    <tr>
+      <td colspan="30">
+        <%= f.submit 'Speichern' %>
+	&nbsp;&nbsp;&nbsp;
+	<%= link_to 'Abbrechen', :back %>
+      </td>
+    </tr>
+  </table>
+<% end %>				    
