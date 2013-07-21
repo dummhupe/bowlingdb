@@ -1,4 +1,4 @@
-<%= form_for [:admin, @player] do |f| %>
+<%= form_for [:admin, @player], :html => { :class => "form-horizontal" } do |f| %>
   <% if @player.errors.any? %>
     <div id="errorExplanation">
       <% @player.errors.full_messages.each do |msg| %>
@@ -7,21 +7,19 @@
     </div>
   <% end %>
 
-  <table style="border: 0px;">
-    <tr>
-      <td><%= f.label :firstname %></td>
-      <td><%= f.text_field :firstname %></td>
-    </tr>
-    <tr>
-      <td><%= f.label :lastname %></td>
-      <td><%= f.text_field :lastname %></td>
-    </tr>
-    <tr>
-      <td colspan="2" style="text-align: center;">
-        <%= f.submit 'Speichern' %>
-	&nbsp;&nbsp;&nbsp;
-	<%= link_to 'Abbrechen', :back %>
-      </td>
-    </tr>
-  </table>
+  <div class="control-group">
+    <label class="control-label">Vorname</label>
+    <div class="controls"><%= f.text_field :firstname %></div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">Nachname</label>
+    <div class="controls"><%= f.text_field :lastname %></div>
+  </div>
+  <div class="control-group">
+    <label class="control-label"></label>
+    <div class="controls">
+      <%= f.submit "Speichern", :class => "btn btn-primary" %>
+      <%= link_to 'Abbrechen', admin_players_path, :class => "btn" %>
+    </div>
+  </div>
 <% end %>				    

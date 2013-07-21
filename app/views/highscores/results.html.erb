@@ -1,8 +1,9 @@
 <%= render 'shared/restrictions' %>
 
-<%= will_paginate @games %>
-<table>
-  <tr class="header">
+<%= will_paginate @games, :renderer => BootstrapPagination::Rails %>
+
+<table class="table">
+  <tr>
     <th>Spieler</th>
     <th>Spiel</th>
     <th>Punkte</th>
@@ -17,17 +18,17 @@
   </tr>
   <% @games.each do |game| %>
     <tr>
-      <td class="player"><%= game.player.full_name %></td>
-      <td class="points"><%= game.number %></td>
-      <td class="points"><%= game.points %></td>
-      <td class="aggregated"><%= game.cleared_frames %></td>
-      <td class="aggregated"><%= game.strikes %></td>
-      <td class="aggregated"><%= game.spares %></td>
-      <td class="aggregated"><%= game.splits %> (<%= game.cleared_splits %>)</td>
-      <td class="aggregated"><%= game.fouls %></td>
-      <td class="cell"><%= link_to game.match_day.formatted_match_day, match_day_path(game.match_day) %></td>
-      <td class="cell"><%= game.match_day.location.name %></td>
-      <td class="cell"><%= game.match_day.category.name %></td>
+      <td><%= game.player.full_name %></td>
+      <td><%= game.number %></td>
+      <td><%= game.points %></td>
+      <td><%= game.cleared_frames %></td>
+      <td><%= game.strikes %></td>
+      <td><%= game.spares %></td>
+      <td><%= game.splits %> (<%= game.cleared_splits %>)</td>
+      <td><%= game.fouls %></td>
+      <td><%= link_to game.match_day.formatted_match_day, match_day_path(game.match_day) %></td>
+      <td><%= game.match_day.location.name %></td>
+      <td><%= game.match_day.category.name %></td>
     </tr>
   <% end %>
 </table>

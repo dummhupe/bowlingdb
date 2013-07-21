@@ -1,44 +1,52 @@
-<%= will_paginate @match_days %>
+<%= will_paginate @match_days, :renderer => BootstrapPagination::Rails %>
 
-<%= link_to 'Neuer Spieltag', {:action => :new}, :class => 'new' %>
+<p><%= link_to 'Neuer Spieltag', {:action => :new}, :class => 'btn btn-primary' %></p>
 
 <% @match_days.each do |match| %>
-<div style="border: 2px solid black; width: 100%">
-  <table cellpadding="5" style="border: 0px;">
-    <tr>
-      <td><%= match.match_day %></td>
-      <td><%= match.category.name %></td>
-      <td><%= match.location.name %></td>
-      <td><%= link_to 'Bearbeiten', edit_admin_match_day_path(match), :class => 'edit' %></td>
-      <td><%= link_to 'Löschen', [:admin, match], :method => :delete %></td>
-    </tr>
-      <tr>
-        <td></td>
-	<td colspan="10">
-	  <table style="border: 0px;" cellpadding="3">
-	    <% current_game = 0 %>
-	    <% match.game.each do |game| %>
-	      <% if game.number != current_game %>
-	        <% current_game = game.number %>
-	        <tr>
-	          <th colspan="10" class="title">Spiel <%= game.number %></th>
-		</tr>
-              <% end %>
-	      <tr>
-		<td><%= game.player.full_name %></td>
-		<td><%= game.points %></td>
-		<td><%= link_to 'Bearbeiten', edit_admin_match_day_game_path(match, game), :class => 'edit' %></td>
-		<td><%= link_to 'Löschen', [:admin, match, game], :method => :delete %></td>
-	      </tr>
-	    <% end %>
-	    <tr>
-	      <td colspan="10" class="new">
-	        <%= link_to 'Neues Spiel', new_admin_match_day_game_path(match.id) %>
-	      </td>
-	    </tr>
-	  </table>
-	</td>
-      </tr>
-  </table>
+<div class="row well">
+  <div class="span2">
+    <dl>
+      <dt>Datum</dt>
+      <dd><%= match.match_day %></dd>
+    </dl>
+    <dl>
+      <dt>Kategorie</dt>
+      <dd><%= match.category.name %></dd>
+    </dl>
+    <dl>
+      <dt>Spielort</dt>
+      <dd><%= match.location.name %></dd>
+    </dl>
+    <div class="btn-group btn-group-vertical">
+      <%= link_to 'Bearbeiten', edit_admin_match_day_path(match), :class => 'btn' %>
+      <%= link_to 'Löschen', [:admin, match], :method => :delete, :class => "btn btn-danger" %>
+    </div>
+  </div>
+  <div class="span7">
+    <table class="table">
+      <% current_game = 0 %>
+      <% match.game.each do |game| %>
+        <% if game.number != current_game %>
+	  <% current_game = game.number %>
+	  <tr>
+	    <th colspan="10">Spiel <%= game.number %></th>
+	  </tr>
+        <% end %>
+	<tr>
+	  <td><%= game.player.full_name %></td>
+	  <td><%= game.points %></td>
+	  <td>
+	    <div class="btn-group">
+	      <%= link_to 'Bearbeiten', edit_admin_match_day_game_path(match, game), :class => 'btn' %>
+              <%= link_to 'Löschen', [:admin, match, game], :method => :delete, :class => "btn btn-danger" %>
+	    </div>
+	  </td>
+        </tr>
+      <% end %>
+    </table>
+    <p><%= link_to 'Neues Spiel', new_admin_match_day_game_path(match.id), :class => "btn btn-primary" %></p>
+  </div>
 </div>
 <% end %>
+
+<p><%= link_to 'Neuer Spieltag', {:action => :new}, :class => 'btn btn-primary' %></p>

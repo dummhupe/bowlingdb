@@ -1,14 +1,15 @@
-<table style="border: 0px;">
+<p><%= link_to "Neue Kategorie", { :action => :new }, { :class => "btn btn-primary" } %></p>
+<table class="table">
   <% @categories.each do |category| %>
     <tr>
       <td><%= category.name %></td>
-      <td><%= link_to 'Bearbeiten', edit_admin_category_path(category) %></td>
-      <td><%= link_to 'Löschen', [:admin, category], :method => :delete %></td>
+      <td>
+        <div class="btn-group">
+	  <%= link_to 'Bearbeiten', edit_admin_category_path(category), :class => "btn btn-primary" %>
+          <%= link_to 'Löschen', [:admin, category], :method => :delete, :class => "btn btn-danger" %>
+	</div>
+      </td>
     </tr>
   <% end %>
-  <tr>
-    <td colspan="10" style="text-align: right">
-      <%= link_to "Neue Kategorie", :action => :new %>
-    </td>
-  </tr>
 </table>
+<p><%= link_to "Neue Kategorie", { :action => :new }, { :class => "btn btn-primary" } %></p>

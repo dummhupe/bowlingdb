@@ -1,6 +1,6 @@
-<h1>Grafiken</h1>
-<%= form_tag "/#{controller_name}/#{action_name}", :method => :get do %>
-<table>
+<%= form_tag "/#{controller_name}/#{action_name}", :method => :get, :class => "form-horizontal" do %>
+
+<table class="table">
   <tr>
     <th></th>
     <th></th>
@@ -29,8 +29,6 @@
     <td class="cell">20</td>
     <td class="cell">200</td>
   </tr>
-  <tr colspan="10">
-    <td><%= submit_tag 'Übernehmen' %></td>
-  </tr>
 </table>
+<%= submit_tag 'Übernehmen', :class => "btn btn-primary" %>
 <% end %>
