@@ -1,8 +1,9 @@
 <%= render 'shared/restrictions' %>
 
-<%= will_paginate @games %>
-<table>
-  <tr class="header">
+<%= will_paginate @games, :renderer => BootstrapPagination::Rails %>
+
+<table class="table">
+  <tr>
     <th>Spieler</th>
     <th>Spiele</th>
     <th>Punkte</th>
@@ -14,14 +15,14 @@
   </tr>
   <% @games.each do |game| %>
     <tr>
-      <td class="player"><%= game.player.full_name %></td>
-      <td class="points"><%= game.number %></td>
-      <td class="points"><%= game.points %></td>
-      <td class="aggregated"><%= game.cleared_frames %></td>
-      <td class="aggregated"><%= game.strikes %></td>
-      <td class="aggregated"><%= game.spares %></td>
-      <td class="aggregated"><%= game.splits %> (<%= game.cleared_splits %>)</td>
-      <td class="aggregated"><%= game.fouls %></td>
+      <td><%= game.player.full_name %></td>
+      <td><%= game.number %></td>
+      <td><%= game.points %></td>
+      <td><%= game.cleared_frames %></td>
+      <td><%= game.strikes %></td>
+      <td><%= game.spares %></td>
+      <td><%= game.splits %> (<%= game.cleared_splits %>)</td>
+      <td><%= game.fouls %></td>
     </tr>
   <% end %>
 </table>

@@ -1,16 +1,16 @@
-<%= will_paginate @match_days %>
+<%= will_paginate @match_days, :renderer => BootstrapPagination::Rails %>
 
-<table>
-  <tr class="header">
+<table class="table">
+  <tr>
     <th>Datum</th>
     <th>Ort</th>
     <th>Kategorie</th>
   </tr>
   <% @match_days.each do |match| %>
     <tr>
-      <td class="cell"><%= link_to match.formatted_match_day, match_day_path(match) %></td>
-      <td class="cell"><%= match.location.name %></td>
-      <td class="cell"><%= match.category.name %></td>
+      <td><%= link_to match.formatted_match_day, match_day_path(match) %></td>
+      <td><%= match.location.name %></td>
+      <td><%= match.category.name %></td>
     </tr>
   <% end %>
 </table>

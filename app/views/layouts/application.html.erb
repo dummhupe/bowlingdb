@@ -7,9 +7,27 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div id="menu"><%= render 'shared/menu' %></div>
+<%= nav_bar :fixed => :top, :responsive => true do %>
+  <%= menu_group do %>
+    <%= menu_item "Startseite", latest_match_days_path %>
+    <%= menu_item "Alle Ergebnisse", match_days_path %>
+    <%= drop_down "Highscores" do %>
+      <%= menu_item "Nach Spielern", "/highscores/by_player" %>
+      <%= menu_item "Nach Spielterminen", "/highscores/by_match_day" %>
+      <%= menu_item "Nach Spielen", "/highscores/by_games" %>
+    <% end %>
+    <%= menu_item "Durchschnitte", "/averages/show" %>
+    <%= drop_down "Grafiken" do %>
+      <%= menu_item "Vergleiche Spieler", "/graphics/player_by_avg_match" %>
+      <%= menu_item "Vergleiche Spiele", "/graphics/player_by_game" %>
+      <%= menu_item "Vergleiche Spielorte", "/graphics/player_by_location" %>
+    <% end %>
+    <%= menu_item "Einstellungen", "/settings/edit" %>
+    <%= menu_item "Credits", "/credits" %>
+  <% end %>
+<% end %>
 
-<div id="content">
+<div id="content" class="container-fluid">
   <%= yield %>
 </div>
 </body>

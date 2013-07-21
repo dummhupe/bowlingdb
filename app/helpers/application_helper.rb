@@ -1,6 +1,6 @@
 module ApplicationHelper
   def result_text_field_options
-    { :size => 2 }
+    { :class => "input-mini-mini", :size => 2 }
   end
 
   def create_dependent_game(number, match)

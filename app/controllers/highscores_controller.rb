@@ -1,6 +1,8 @@
 require 'will_paginate/array'
 
 class HighscoresController < ReportController
+  WillPaginate.per_page = 20
+
   def by_player
     @games = []
     Game.joins(:match_day).select('player_id, MAX(points) AS points').where(:player_id => @player_restrictions, 'match_days.location_id' => @location_restrictions, 'match_days.category_id' => @category_restrictions).where('match_days.match_day >= ? AND match_days.match_day <= ?', @date_from_restriction.match_day, @date_to_restriction.match_day).group('player_id').each do |row|

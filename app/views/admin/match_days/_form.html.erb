@@ -1,4 +1,4 @@
-<%= form_for [:admin, @match_day] do |f| %>
+<%= form_for [:admin, @match_day], :html => { :class => "form-horizontal" } do |f| %>
   <% if @match_day.errors.any? %>
     <div id="errorExplanation">
       <%= @match_day.errors.full_messages.each do |msg| %>
@@ -7,24 +7,29 @@
     </div>
   <% end %>
 
-  <table style="border: 0px;">
-    <tr>
-      <td>Datum</td>
-      <td><%= f.date_select :match_day %></td>
-    </tr>
-    <tr>
-      <td>Beschreibung</td>
-      <td><%= select :match_objects, :category, Category.categories_for_selection %></td>
-    </tr>
-    <tr>
-      <td>Ort</td>
-      <td><%= select :match_objects, :location, Location.locations_for_selection %></td>
-    </tr>
-    <tr>
-      <td colspan="3" style="text-align: center;">
-        <%= f.submit 'Speichern' %>
-	&nbsp;&nbsp;&nbsp;
-	<%= link_to 'Abbrechen', admin_match_days_path %>
-    </tr>
-  </table>
+  <div class="control-group">
+    <label class="control-label">Datum</label>
+    <div class="controls">
+      <%= f.date_select :match_day, {}, { :class => "date_select" } %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">Beschreibung</label>
+    <div class="controls">
+      <%= select :match_objects, :category, Category.categories_for_selection %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">Ort</label>
+    <div class="controls">
+      <%= select :match_objects, :location, Location.locations_for_selection %>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label"></label>
+    <div class="controls">
+      <%= f.submit 'Speichern', :class => "btn btn-primary" %>
+      <%= link_to 'Abbrechen', admin_match_days_path, :class => "btn" %>
+    </div>
+  </div>
 <% end %>

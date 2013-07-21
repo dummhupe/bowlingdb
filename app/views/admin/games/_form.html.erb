@@ -8,28 +8,30 @@
   <% end %>
 
   <%= hidden_field :game_objects, :match_day, { :value => @game.match_day.id } %>
-  <table style="margin-bottom: 20px;">
-    <tr>
-      <th>Spieltag</th>
-      <td><%= @game.match_day.match_day %></td>
-    </tr>
-    <tr>
-      <th>Kategorie</th>
-      <td><%= @game.match_day.category.name %></td>
-    </tr>
-    <tr>
-      <th>Spielort</th>
-      <td><%= @game.match_day.location.name %></td>
-    </tr>
-    <tr>
-      <th>Spieler</th>
-      <td><%= select :game_objects, :player, Player.players_for_selection, { :selected => @game.player.id } %></td>
-    </tr>
-    <tr>
-      <th>Spielnummer</th>
-      <td><%= f.select :number, Game.numbers_for_selection(@game.match_day) %></td>
-    </tr>
-  </table>
+
+  <div class="form-horizontal">
+    <div class="control-group">
+      <label class="control-label">Spieltag</label>
+      <div class="controls"><input type="text" value="<%= @game.match_day.match_day %>" disabled/></div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Kategorie</label>
+      <div class="controls"><input type="text" value="<%= @game.match_day.category.name %>" disabled/></div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Spielort</label>
+      <div class="controls"><input type="text" value="<%= @game.match_day.location.name %>" disabled/></div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Spieler</label>
+      <div class="controls"><%= select :game_objects, :player, Player.players_for_selection, { :selected => @game.player.id } %></div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">Spielnummer</label>
+      <div class="controls"><%= f.select :number, Game.numbers_for_selection(@game.match_day) %></div>
+    </div>
+  </div>
+
   <table>
     <tr>
       <% 9.times do |i| %>
@@ -41,39 +43,40 @@
     <tr>
       <% 9.times do |i| %>
         <td>
-	  <%= f.text_field "frame0#{i+1}_result1", result_text_field_options %>
+	  <%= f.text_field "frame0#{i+1}_result1", result_text_field_options  %>
 	  <br/>
-          <%= f.select "frame0#{i+1}_state1", Game.states_for_throw1_selection, { :include_blank => true, :selected => @game.send("frame0#{i+1}_state1") } %>
+          <%= f.select "frame0#{i+1}_state1", Game.states_for_throw1_selection, { :include_blank => true, :selected => @game.send("frame0#{i+1}_state1") }, { :class => "frame_state" } %>
 	</td>
 	<td>
 	  <%= f.text_field "frame0#{i+1}_result2", result_text_field_options %>
 	  <br/>
-	  <%= f.select "frame0#{i+1}_state2", Game.states_for_throw2_selection, { :include_blank => true, :selected => @game.send("frame0#{i+1}_state2") } %>
+	  <%= f.select "frame0#{i+1}_state2", Game.states_for_throw2_selection, { :include_blank => true, :selected => @game.send("frame0#{i+1}_state2") }, { :class => "frame_state" } %>
 	</td>
       <% end %>
       <td>
         <%= f.text_field :frame10_result1, result_text_field_options %>
 	<br/>
-	<%= f.select :frame10_state1, Game.states_for_throw1_selection, { :include_blank => true, :selected => @game.frame10_state1 } %>
+	<%= f.select :frame10_state1, Game.states_for_throw1_selection, { :include_blank => true, :selected => @game.frame10_state1 }, { :class => "frame_state" } %>
       </td>
       <td>
 	<%= f.text_field :frame10_result2, result_text_field_options %>
 	<br/>
-	<%= f.select :frame10_state2, Game.states_for_frame10_selection, { :include_blank => true, :selected => @game.frame10_state2 } %>
+	<%= f.select :frame10_state2, Game.states_for_frame10_selection, { :include_blank => true, :selected => @game.frame10_state2 }, { :class => "frame_state" } %>
       </td>
       <td>
 	<%= f.text_field :frame10_result3, result_text_field_options %>
 	<br/>
-	<%= f.select :frame10_state3, Game.states_for_frame10_selection, { :include_blank => true, :selected => @game.frame10_state3 } %>
+	<%= f.select :frame10_state3, Game.states_for_frame10_selection, { :include_blank => true, :selected => @game.frame10_state3 }, { :class => "frame_state" } %>
       </td>
-      <td><%= @game.points %></td>
-    </tr>
-    <tr>
-      <td colspan="30">
-        <%= f.submit 'Speichern' %>
-	&nbsp;&nbsp;&nbsp;
-	<%= link_to 'Abbrechen', :back %>
-      </td>
+      <td class="text-right"><%= @game.points %></td>
     </tr>
   </table>
+  
+  <div class="control-group">
+    <label class="control-label"></label>
+    <div class="controls">
+      <%= f.submit 'Speichern', :class => "btn btn-primary" %>
+      <%= link_to 'Abbrechen', :back, :class => "btn" %>
+    </div>
+  </div>
 <% end %>				    
