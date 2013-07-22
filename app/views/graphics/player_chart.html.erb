@@ -1,4 +1,4 @@
-<%= render 'shared/restrictions' %>
+<%= render 'shared/graphics_player_restrictions' %>
 
 <script type="text/javascript" charset="utf-8">
   $(function() {
@@ -60,15 +60,15 @@
 	  <% end %>
 	]
       },
-      <% if @regression %>
+      <% if @regression_data[player_id] %>
       {
         type: 'line',
-        name: 'Regression',
+        name: 'Regression: <%= Player.find(player_id).full_name %>',
 	marker: {
 	  enabled: false
 	},
 	data: (function(){
-	  return <%= @regression.inspect %>;
+	  return <%= @regression_data[player_id].inspect %>;
 	})()
       },
       <% end %>

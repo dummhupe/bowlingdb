@@ -1,4 +1,4 @@
-<%= render 'shared/location_restrictions' %>
+<%= render 'shared/graphics_location_restrictions' %>
 
 <script type="text/javascript" charset="utf-8">
   $(function() {
@@ -54,15 +54,15 @@
 	  <% end %>
 	]
       },
-      <% if @regression %>
+      <% if @regression_data[location_id] %>
       {
         type: 'line',
-	name: 'Regression',
+	name: 'Regression: <%= Location.find(location_id).name %>',
 	marker: {
 	  enabled: false
 	},
 	data: (function(){
-	  return <%= @regression.inspect %>;
+	  return <%= @regression_data[location_id].inspect %>;
 	})()
       },
       <% end %>

@@ -1,9 +1,11 @@
 class ReportController < ApplicationController
   before_filter do |controller|
     if params[:reset]
-      params[:location] = params[:category] = params[:player] = params[:date_mode] = nil
-      session[:location] = session[:category] = session[:player] = session[:date_mode] = nil
+      params[:location] = params[:category] = params[:player] = params[:date_mode] = params[:regression] = nil
+      session[:location] = session[:category] = session[:player] = session[:date_mode] = session[:regression] = nil
     end
+
+    @regression = params[:regression] || session[:regression] || false
 
     @location_restrictions = params[:location] || session[:location] || Location.select(:id).uniq.map { |l| l.id }
     @category_restrictions = params[:category] || session[:category] || Category.select(:id).uniq.map { |c| c.id }
@@ -36,10 +38,11 @@ class ReportController < ApplicationController
 
     end
 
-    session[:location] = @location_restrictions
-    session[:category] = @category_restrictions
-    session[:player]   = @player_restrictions
-    session[:date_mode] = @date_mode
+    session[:location]   = @location_restrictions
+    session[:category]   = @category_restrictions
+    session[:player]     = @player_restrictions
+    session[:date_mode]  = @date_mode
+    session[:regression] = @regression
 
     @graphics_height = session[:graphics_height] || get_default_graphics_height
   end
