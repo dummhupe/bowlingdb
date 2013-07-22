@@ -9,9 +9,11 @@ class GraphicsController < ReportController
     @regression_data = {}
     @player_restrictions.each do |player_id|
       @games[player_id] = Game.joins(:match_day).where(:player_id => player_id, 'match_days.location_id' => @location_restrictions, 'match_days.category_id' => @category_restrictions).where('match_days.match_day >= ? AND match_days.match_day <= ?', @date_from_restriction.match_day, @date_to_restriction.match_day).order('match_days.match_day')
-      if @regression and @games[player_id]
-        scores = Game.joins(:match_day).select('match_day_id, COUNT(points) AS game_count, AVG(points) AS points').where(:player_id => @player_restrictions.first, 'match_days.location_id' => @location_restrictions, 'match_days.category_id' => @category_restrictions).where('match_days.match_day >= ? AND match_days.match_day <= ?', @date_from_restriction.match_day, @date_to_restriction.match_day).group('match_day_id').order('match_days.match_day').map { |g| [MatchDay.find(g.match_day_id).match_day.to_datetime.to_i, g.points] }
-	@regression_data[player_id] = regression(scores.map {|s| s[0] }, scores.map {|s| s[1] })
+      if @regression
+        scores = Game.joins(:match_day).select('match_day_id, COUNT(points) AS game_count, AVG(points) AS points').where(:player_id => player_id, 'match_days.location_id' => @location_restrictions, 'match_days.category_id' => @category_restrictions).where('match_days.match_day >= ? AND match_days.match_day <= ?', @date_from_restriction.match_day, @date_to_restriction.match_day).group('match_day_id').order('match_days.match_day').map { |g| [MatchDay.find(g.match_day_id).match_day.to_datetime.to_i, g.points] }
+	if scores and scores.to_a.size >= 5
+	  @regression_data[player_id] = regression(scores.map {|s| s[0] }, scores.map {|s| s[1] })
+	end
       end
     end
 
@@ -24,8 +26,9 @@ class GraphicsController < ReportController
     @regression_data = {}
     @player_restrictions.each do |player_id|
       @games[player_id] = Game.joins(:match_day).select('match_day_id, COUNT(points) AS game_count, AVG(points) AS points').where(:player_id => player_id, 'match_days.location_id' => @location_restrictions, 'match_days.category_id' => @category_restrictions).where('match_days.match_day >= ? AND match_days.match_day <= ?', @date_from_restriction.match_day, @date_to_restriction.match_day).group('match_day_id').order('match_days.match_day')
-      if @regression and @games[player_id]
+      if @regression and @games[player_id] and @games[player_id].to_a.size >= 5
         scores = @games[player_id]
+	puts scores
 	@regression_data[player_id] = regression(scores.map {|g| g.match_day.match_day.to_datetime.to_i }, scores.map {|g| g.points })
       end
     end       
@@ -44,8 +47,9 @@ class GraphicsController < ReportController
     @regression_data = {}
     @location_restrictions.each do |location_id|
       @games[location_id] = Game.joins(:match_day).select('match_day_id, COUNT(points) AS game_count, AVG(points) AS points').where(:player_id => @player_restrictions, 'match_days.location_id' => location_id, 'match_days.category_id' => @category_restrictions).where('match_days.match_day >= ? AND match_days.match_day <= ?', @date_from_restriction.match_day, @date_to_restriction.match_day).group('match_day_id').order('match_days.match_day')
-      if @regression and @games[location_id]
+      if @regression and @games[location_id] and @games[location_id].to_a.size >= 5
         scores = @games[location_id]
+	session['scores.size'] = scores.to_a.size-1
 	@regression_data[location_id] = regression((0..(scores.to_a.size-1)).map{|i| i}, scores.map{|g| g.points})
       end
     end
