@@ -1,8 +1,8 @@
 class ReportController < ApplicationController
   before_filter do |controller|
     if params[:reset]
-      params[:location] = params[:category] = params[:player] = params[:date_mode] = params[:regression] = nil
-      session[:location] = session[:category] = session[:player] = session[:date_mode] = session[:regression] = nil
+      params[:location] = params[:category] = params[:player] = params[:date_mode] = params[:regression] = params[:date_from] = params[:date_to] = nil
+      session[:location] = session[:category] = session[:player] = session[:date_mode] = session[:regression] = session[:date_from] = session[:date_to] = nil
     end
 
     @regression = params[:regression] || session[:regression] || false
@@ -15,6 +15,8 @@ class ReportController < ApplicationController
     end
 
     @date_mode = params[:date_mode] || session[:date_mode] || 'halfyear'
+    date_from  = params[:date_from] || session[:date_from] || nil
+    date_to    = params[:date_to]   || session[:date_to]   || nil
     case @date_mode
     when 'none' then
       @date_from_restriction = MatchDay.order(:match_day).first
@@ -33,8 +35,8 @@ class ReportController < ApplicationController
       @date_to_restriction = MatchDay.order('match_day DESC').first
 
     when 'exact' then
-      @date_from_restriction = MatchDay.find(params[:date_from])
-      @date_to_restriction = MatchDay.find(params[:date_to])
+      @date_from_restriction = MatchDay.find(date_from)
+      @date_to_restriction = MatchDay.find(date_to)
 
     end
 
@@ -42,6 +44,8 @@ class ReportController < ApplicationController
     session[:category]   = @category_restrictions
     session[:player]     = @player_restrictions
     session[:date_mode]  = @date_mode
+    session[:date_from]  = date_from
+    session[:date_to]    = date_to
     session[:regression] = @regression
 
     @graphics_height = session[:graphics_height] || get_default_graphics_height
