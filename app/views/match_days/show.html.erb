@@ -36,15 +36,15 @@
 	  <th colspan="2" class="text-center well">8</th>
 	  <th colspan="2" class="text-center well">9</th>
 	  <th colspan="3" class="text-center well">10</th>
-	  <th>Gesamt</th>
-	  <th>Summe</th>
-	  <th>&empty;</th>
+	  <th class="text-center">Gesamt</th>
+	  <th class="text-center">Summe</th>
+	  <th class="text-center">&empty;</th>
         </tr>
       <% end %>
       <tr>
         <td><%= game.player.full_name %></td>
 	<% 10.times do |i| %>
-  	  <td class="well <%= @state_mapping[game.send('frame%02d_state1' % (i+1).to_s)] %>">
+  	  <td class="text-center well <%= @state_mapping[game.send('frame%02d_state1' % (i+1).to_s)] %>">
 	    <% if %w(/ X).include? game.send("frame%02d_state1" % (i+1).to_s) %>
 	      <%= game.send("frame%02d_state1" % (i+1).to_s) %>
 	    <% elsif game.send("frame%02d_result1" % (i+1).to_s) == 0 %>
@@ -53,7 +53,7 @@
   	      <%= game.send("frame%02d_result1" % (i+1).to_s) %>
 	    <% end %>
 	  </td>
-	  <td class="well <%= @state_mapping[game.send('frame%02d_state2' % (i+1).to_s)] %>">
+	  <td class="text-center well <%= @state_mapping[game.send('frame%02d_state2' % (i+1).to_s)] %>">
 	    <% if %w(/ X).include? game.send("frame%02d_state2" % (i+1).to_s) %>
 	      <%= game.send("frame%02d_state2" % (i+1).to_s) %>
 	    <% elsif game.send("frame%02d_result2" % (i+1).to_s) == 0 %>
@@ -63,27 +63,27 @@
 	    <% end %>
 	  </td>
 	<% end %>
-	<td class="well <%= @state_mapping[game.frame10_state3] %>">
+	<td class="text-center well <%= @state_mapping[game.frame10_state3] %>">
 	  <% if %w(/ X).include? game.frame10_state3 %>
 	    <%= game.frame10_state3 %>
 	  <% else %>
 	    <%= game.frame10_result3 %>
 	  <% end %>
 	</td>
-	<td class="text-right"><%= game.points %></td>
+	<td class="text-center"><%= game.points %></td>
 
 	<% sum[game.player.id] = count[game.player.id] = 0 unless sum.has_key? game.player.id %>
 	<% sum[:overall] = 0 unless sum.has_key? :overall %>
 	<% sum[game.player.id] += game.points %>
 	<% sum[:overall] += game.points %>
 	<% count[game.player.id] += 1 %>
-	<td class="text-right"><%= sum[game.player.id] %></td>
-	<td class="text-right"><%= sum[game.player.id] / count[game.player.id] %></td>
+	<td class="text-center"><%= sum[game.player.id] %></td>
+	<td class="text-center"><%= sum[game.player.id] / count[game.player.id] %></td>
       </tr>
     <% end %>
     <tr>
       <td colspan="23"></td>
-      <td class="text-right"><%= sum[:overall] %></td>
+      <td class="text-center"><%= sum[:overall] %></td>
       <td></td>
     </tr>
   </table>
