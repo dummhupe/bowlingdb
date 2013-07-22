@@ -30,13 +30,35 @@
 	  return date_text + "<br/>" + this.series.name + ": " + score_text;
 	}
       },
+      plotOptions: {
+        series: {
+	  cursor: 'pointer',
+	  point: {
+	    events: {
+	      click: function(){
+	        if (this.options.matchday_id != null){
+  	          location.href = "/match_days/" + this.options.matchday_id;
+		}
+	      }
+	    }
+	  }
+	},
+      },
       series: [
       <% @games.each do |player_id, scores| %>
       <% next if scores.empty? %>
       {
         type: '<%= @chart_type %>',
         name: "<%= Player.find(player_id).full_name %>",
-        data: <%= scores.inspect %>
+        data: [
+	  <% scores.each do |game| %>
+	    {
+	      x: <%= game.match_day.match_day.to_datetime.to_i + 1 %>,
+	      y: <%= game.points %>,
+	      matchday_id: <%= game.match_day.id %>
+	    },
+	  <% end %>
+	]
       },
       <% if @regression %>
       {

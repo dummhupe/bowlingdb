@@ -26,12 +26,33 @@
 	  return this.series.name + ": " + score_text;
 	}
       },
+      plotOptions: {
+        series: {
+	  cursor: 'pointer',
+	  point: {
+	    events: {
+	      click: function(){
+	        if (this.options.matchday_id != null){
+		  location.href = "/match_days/" + this.options.matchday_id;
+		}
+	      }
+	    }
+	  }
+	}
+      },
       series: [
       <% @games.each do |location_id, scores| %>
       <% next if scores.empty? %>
       {
         name: "<%= Location.find(location_id).name %>",
-        data: <%= scores.inspect %>
+        data: [
+	  <% scores.each do |game| %>
+	    {
+	      y: <%= game.points %>,
+	      matchday_id: <%= game.match_day.id %>
+	    },
+	  <% end %>
+	]
       },
       <% if @regression %>
       {
