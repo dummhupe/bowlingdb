@@ -5,24 +5,24 @@
 <table class="table">
   <tr>
     <th>Spieler</th>
-    <th>Spiele</th>
-    <th>Punkte</th>
-    <th>Geräumt</th>
-    <th>Strikes</th>
-    <th>Spares</th>
-    <th>Splits</th>
-    <th>Fouls</th>
+    <th class="text-center">Spiele</th>
+    <th class="text-center">Punkte</th>
+    <th class="text-center">Geräumt</th>
+    <th class="text-center">Strikes</th>
+    <th class="text-center">Spares</th>
+    <th class="text-center">Splits</th>
+    <th class="text-center">Fouls</th>
   </tr>
   <% @games.each do |game| %>
     <tr>
       <td><%= game.player.full_name %></td>
-      <td><%= game.number %></td>
-      <td><%= game.points %></td>
-      <td><%= game.cleared_frames %></td>
-      <td><%= game.strikes %></td>
-      <td><%= game.spares %></td>
-      <td><%= game.splits %> (<%= game.cleared_splits %>)</td>
-      <td><%= game.fouls %></td>
+      <td class="text-center"><%= game.number %></td>
+      <td class="text-center"><%= game.points %></td>
+      <td class="text-center"><%= game.cleared_frames %></td>
+      <td class="text-center"><%= game.strikes %></td>
+      <td class="text-center"><%= game.spares %></td>
+      <td class="text-center"><%= game.splits %> (<%= game.cleared_splits %>)</td>
+      <td class="text-center"><%= game.fouls %></td>
     </tr>
   <% end %>
 </table>
