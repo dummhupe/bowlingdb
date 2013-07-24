@@ -39,6 +39,7 @@
     </tr>
       <td colspan=4">
         <label class="checkbox">
+	  <%= hidden_field_tag(:regression, false) %>
 	  <%= check_box_tag(:regression, true, @regression) %> Ausgleichskurve (ab fünf Datenpunkten)
 	</label>
       </td>

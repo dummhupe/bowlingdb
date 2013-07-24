@@ -5,7 +5,15 @@ class ReportController < ApplicationController
       session[:location] = session[:category] = session[:player] = session[:date_mode] = session[:regression] = session[:date_from] = session[:date_to] = nil
     end
 
-    @regression = params[:regression] || session[:regression] || false
+    if params.include? :regression
+      @regression = params[:regression] == "true"
+    elsif session.include? :regression
+      @regression = session[:regression]
+    else
+      @regression = false
+    end
+
+
 
     @location_restrictions = params[:location] || session[:location] || Location.select(:id).uniq.map { |l| l.id }
     @category_restrictions = params[:category] || session[:category] || Category.select(:id).uniq.map { |c| c.id }
