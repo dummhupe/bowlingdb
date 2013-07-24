@@ -5,7 +5,7 @@
     new Highcharts.Chart({
       chart: {
         renderTo: "bowling_chart",
-	backgroundColor: "#FAFAFA",
+	backgroundColor: "#FAFAFA"
       },
       title: {
         text: ""
@@ -15,7 +15,7 @@
 	labels: {
 	  formatter: function(){
 	    return Highcharts.dateFormat("%d.%m.%Y", this.value*1000);
-	  },
+	  }
 	}
       },
       yAxis: {
@@ -42,26 +42,36 @@
 	      }
 	    }
 	  }
-	},
+	}
       },
       series: [
+      <% isFirstGame = true %>
       <% @games.each do |player_id, scores| %>
       <% next if scores.empty? %>
+        <% unless isFirstGame %>
+          ,
+        <% end %>
+        <% isFirstGame = false %>
       {
         type: '<%= @chart_type %>',
         name: "<%= Player.find(player_id).full_name %>",
         data: [
+	  <% isFirstDataPoint = true %>
 	  <% scores.each do |game| %>
+	    <% unless isFirstDataPoint %>
+	      ,
+	    <% end %>
+	    <% isFirstDataPoint = false %>
 	    {
 	      x: <%= game.match_day.match_day.to_datetime.to_i + 1 %>,
 	      y: <%= game.points %>,
 	      matchday_id: <%= game.match_day.id %>
-	    },
+	    }
 	  <% end %>
 	]
-      },
+      }
       <% if @regression_data[player_id] %>
-      {
+      ,{
         type: 'line',
         name: 'Regression: <%= Player.find(player_id).full_name %>',
 	marker: {
@@ -70,7 +80,7 @@
 	data: (function(){
 	  return <%= @regression_data[player_id].inspect %>;
 	})()
-      },
+      }
       <% end %>
       <% end %>
       ]
