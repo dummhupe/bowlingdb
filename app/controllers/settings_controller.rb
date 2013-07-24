@@ -1,11 +1,11 @@
 class SettingsController < ApplicationController
   def edit
-    @graphics_height = params[:graphics_height] || session[:graphics_height]
+    @graphics_height = params[:graphics_height] || session[:graphics_height] || get_default_graphics_height
     if not @graphics_height or not @graphics_height.to_s.match(/^\d+$/) or @graphics_height.to_i < 100
       @graphics_heigt = get_default_graphics_height
     end
 
-    @polynom_degree = params[:polynom_degree] || session[:polynom_degree]
+    @polynom_degree = params[:polynom_degree] || session[:polynom_degree] || get_default_polynom_degree
     if not @polynom_degree or not @polynom_degree.to_s.match(/^\d+$/) or @polynom_degree.to_i < 1 or @polynom_degree.to_i > 9
       @polynom_degree = get_default_polynom_degree
     end
