@@ -29,6 +29,7 @@
       plotOptions: {
         series: {
 	  cursor: 'pointer',
+	  turboThreshold: <%= @nMaxSeriesPoints %>,
 	  point: {
 	    events: {
 	      click: function(){

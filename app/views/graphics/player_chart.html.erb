@@ -33,6 +33,7 @@
       plotOptions: {
         series: {
 	  cursor: 'pointer',
+	  turboThreshold: <%= @nMaxSeriesPoints %>,
 	  point: {
 	    events: {
 	      click: function(){
@@ -45,23 +46,22 @@
 	}
       },
       series: [
-      <% isFirstGame = true %>
+      <% isFirst = true %>
       <% @games.each do |player_id, scores| %>
       <% next if scores.empty? %>
-        <% unless isFirstGame %>
+        <% unless isFirst %>
           ,
         <% end %>
-        <% isFirstGame = false %>
       {
         type: '<%= @chart_type %>',
         name: "<%= Player.find(player_id).full_name %>",
         data: [
-	  <% isFirstDataPoint = true %>
+	  <% isFirst = true %>
 	  <% scores.each do |game| %>
-	    <% unless isFirstDataPoint %>
+	    <% unless isFirst %>
 	      ,
 	    <% end %>
-	    <% isFirstDataPoint = false %>
+	    <% isFirst = false %>
 	    {
 	      x: <%= game.match_day.match_day.to_datetime.to_i + 1 %>,
 	      y: <%= game.points %>,

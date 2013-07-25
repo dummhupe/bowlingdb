@@ -7,8 +7,12 @@ class GraphicsController < ReportController
     @chart_type = 'scatter'
     @games = {}
     @regression_data = {}
+    @nMaxSeriesPoints = 0
     @player_restrictions.each do |player_id|
       @games[player_id] = Game.joins(:match_day).where(:player_id => player_id, 'match_days.location_id' => @location_restrictions, 'match_days.category_id' => @category_restrictions).where('match_days.match_day >= ? AND match_days.match_day <= ?', @date_from_restriction.match_day, @date_to_restriction.match_day).order('match_days.match_day')
+      if @games[player_id].length > @nMaxSeriesPoints
+        @nMaxSeriesPoints = @games[player_id].length
+      end
       if @regression
         scores = Game.joins(:match_day).select('match_day_id, COUNT(points) AS game_count, AVG(points) AS points').where(:player_id => player_id, 'match_days.location_id' => @location_restrictions, 'match_days.category_id' => @category_restrictions).where('match_days.match_day >= ? AND match_days.match_day <= ?', @date_from_restriction.match_day, @date_to_restriction.match_day).group('match_day_id').order('match_days.match_day').map { |g| [MatchDay.find(g.match_day_id).match_day.to_datetime.to_i, g.points] }
 	if scores and scores.to_a.size >= 5
@@ -24,8 +28,12 @@ class GraphicsController < ReportController
     @chart_type = 'line'
     @games = {}
     @regression_data = {}
+    @nMaxSeriesPoints = 0
     @player_restrictions.each do |player_id|
       @games[player_id] = Game.joins(:match_day).select('match_day_id, COUNT(points) AS game_count, AVG(points) AS points').where(:player_id => player_id, 'match_days.location_id' => @location_restrictions, 'match_days.category_id' => @category_restrictions).where('match_days.match_day >= ? AND match_days.match_day <= ?', @date_from_restriction.match_day, @date_to_restriction.match_day).group('match_day_id').order('match_days.match_day')
+      if @games[player_id].length > @nMaxSeriesPoints
+        @nMaxSeriesPoints = @games[player_id].length
+      end
       if @regression and @games[player_id] and @games[player_id].to_a.size >= 5
         scores = @games[player_id]
 	puts scores
@@ -45,8 +53,12 @@ class GraphicsController < ReportController
 
     @games = {}
     @regression_data = {}
+    @nMaxSeriesPoints = 0
     @location_restrictions.each do |location_id|
       @games[location_id] = Game.joins(:match_day).select('match_day_id, COUNT(points) AS game_count, AVG(points) AS points').where(:player_id => @player_restrictions, 'match_days.location_id' => location_id, 'match_days.category_id' => @category_restrictions).where('match_days.match_day >= ? AND match_days.match_day <= ?', @date_from_restriction.match_day, @date_to_restriction.match_day).group('match_day_id').order('match_days.match_day')
+      if @games[location_id].length > @nMaxSeriesPoints
+        @nMaxSeriesPoints = @games[location_id].length
+      end
       if @regression and @games[location_id] and @games[location_id].to_a.size >= 5
         scores = @games[location_id]
 	session['scores.size'] = scores.to_a.size-1
