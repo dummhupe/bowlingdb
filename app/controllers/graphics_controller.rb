@@ -4,7 +4,6 @@ class GraphicsController < ReportController
   @default_resolution = 100
 
   def player_by_game
-    @chart_type = 'scatter'
     @games = {}
     @regression_data = {}
     @nMaxSeriesPoints = 0
@@ -21,11 +20,10 @@ class GraphicsController < ReportController
       end
     end
 
-    render :player_chart
+    render :player_games_chart
   end
 
   def player_by_avg_match
-    @chart_type = 'line'
     @games = {}
     @regression_data = {}
     @nMaxSeriesPoints = 0
@@ -45,8 +43,6 @@ class GraphicsController < ReportController
   end
 
   def player_by_location
-    @chart_type = 'line'
-
     if @player_restrictions.kind_of? Array
       @player_restrictions = @player_restrictions.first
     end

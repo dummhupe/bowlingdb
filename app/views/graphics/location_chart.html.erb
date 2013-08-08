@@ -51,6 +51,7 @@
 	<% isFirstGame = false %>
       {
         name: "<%= Location.find(location_id).name %>",
+	type: 'line',
         data: [
 	  <% isFirstDataPoint = true %>
 	  <% scores.each do |game| %>

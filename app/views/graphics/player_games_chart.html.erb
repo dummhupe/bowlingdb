@@ -27,7 +27,7 @@
         formatter: function(){
           var date_text = Highcharts.dateFormat("%d.%m.%Y", this.x*1000);
 	  var score_text = parseInt(this.y) + " Punkte";
-	  return date_text + "<br/>" + this.series.name + ": " + score_text;
+	  return date_text + ", Spiel " + this.point.game_nr + "<br/>" + this.series.name + ": " + score_text;
 	}
       },
       plotOptions: {
@@ -53,7 +53,7 @@
           ,
         <% end %>
       {
-        type: 'line',
+        type: "scatter",
         name: "<%= Player.find(player_id).full_name %>",
         data: [
 	  <% isFirst = true %>
@@ -65,7 +65,8 @@
 	    {
 	      x: <%= game.match_day.match_day.to_datetime.to_i + 1 %>,
 	      y: <%= game.points %>,
-	      matchday_id: <%= game.match_day.id %>
+	      matchday_id: <%= game.match_day.id %>,
+	      game_nr: <%= game.number %>
 	    }
 	  <% end %>
 	]
