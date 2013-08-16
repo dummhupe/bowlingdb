@@ -25,9 +25,9 @@
       },
       tooltip: {
         formatter: function(){
-          var date_text = Highcharts.dateFormat("%d.%m.%Y", this.x*1000);
-	  var score_text = parseInt(this.y) + " Punkte";
-	  return date_text + "<br/>" + this.series.name + ": " + score_text;
+          var first_line = Highcharts.dateFormat("%d.%m.%Y", this.x*1000) + ", " + this.series.name;
+	  var second_line = parseInt(this.y) + " Punkte, " + this.point.game_count + " Spiele";
+	  return first_line + "<br/>" + second_line;
 	}
       },
       plotOptions: {
@@ -65,7 +65,8 @@
 	    {
 	      x: <%= game.match_day.match_day.to_datetime.to_i + 1 %>,
 	      y: <%= game.points %>,
-	      matchday_id: <%= game.match_day.id %>
+	      matchday_id: <%= game.match_day.id %>,
+	      game_count: <%= game.game_count %>
 	    }
 	  <% end %>
 	]
