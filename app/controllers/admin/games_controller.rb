@@ -14,7 +14,7 @@ class Admin::GamesController < Admin::BaseController
   def create
     @game = Game.new(params[:game])
     @game.match_day = MatchDay.find(params[:game_objects][:match_day])
-    @game.player   = Player.find(params[:game_objects][:player])
+    @game.player = Player.find(params[:game_objects][:player])
     if @game.save
       redirect_to admin_match_days_path
     else
@@ -28,6 +28,7 @@ class Admin::GamesController < Admin::BaseController
 
   def update
     @game = Game.find(params[:id])
+    @game.player = Player.find(params[:game_objects][:player])
     if @game.update_attributes(params[:game])
       redirect_to admin_match_days_path
     else

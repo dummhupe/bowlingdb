@@ -17,9 +17,9 @@
       <dt>Spielort</dt>
       <dd><%= match.location.name %></dd>
     </dl>
-    <div class="btn-group btn-group-vertical">
+    <div class="btn-group btn-group-vertical text-center">
       <%= link_to 'Bearbeiten', edit_admin_match_day_path(match), :class => 'btn' %>
-      <%= link_to 'Löschen', [:admin, match], :method => :delete, :class => "btn btn-danger" %>
+      <%= button_to 'Löschen', [:admin, match], :method => :delete, :class => "btn btn-danger" %>
     </div>
   </div>
   <div class="span7">
@@ -38,7 +38,7 @@
 	  <td>
 	    <div class="btn-group">
 	      <%= link_to 'Bearbeiten', edit_admin_match_day_game_path(match, game), :class => 'btn' %>
-              <%= link_to 'Löschen', [:admin, match, game], :method => :delete, :class => "btn btn-danger" %>
+              <%= button_to 'Löschen', [:admin, match, game], :method => :delete, :class => "btn btn-danger" %>
 	    </div>
 	  </td>
         </tr>
