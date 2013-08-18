@@ -72,13 +72,46 @@ class Game < ActiveRecord::Base
   belongs_to :player, :inverse_of => :game
   
   before_validation { |game|
-    # set states
+    fill_points_and_states(game)
+    fill_aggregations(game)
+  }
+
+  def self.numbers_for_selection(match)
+    i = match.game.map(&:number).uniq.size + 1
+    Array(1..i)
+  end
+
+  def self.states_for_throw1_selection
+    %w{N S F X}.map { |s| [s] }
+  end
+
+  def self.states_for_throw2_selection
+    %w{N F /}.map { |s| [s] }
+  end
+
+  def self.states_for_frame10_selection
+    %w{N S F / X}.map { |s| [s] }
+  end
+
+  private
+  def fill_points_and_states(game)
     9.times do |i|
       2.times do |j|
-        if game.send("frame0#{i+1}_state#{j+1}") == 'F'
-          eval("game.frame0#{i+1}_result#{j+1} = 0")
-	elsif game.send("frame0#{i+1}_state#{j+1}") == nil || game.send("frame0#{i+1}_state#{j+1}") == ''
+	if game.send("frame0#{i+1}_state#{j+1}") == nil || game.send("frame0#{i+1}_state#{j+1}") == ''
 	  eval("game.frame0#{i+1}_state#{j+1} = 'N'")
+	end
+
+        if [nil, 0].include? game.send("frame0#{i+1}_result#{j+1}")
+          # deduce points from state
+	  case game.send("frame0#{i+1}_state#{j+1}")
+	  when 'F'
+	    eval("game.frame0#{i+1}_result#{j+1} = 0")
+	  when '/'
+	    eval("game.frame0#{i+1}_result#{j+1} = 10 - game.frame0#{i+1}_result#{j}")
+  	  when 'X'
+  	    eval("game.frame0#{i+1}_result1 = 10")
+	    eval("game.frame0#{i+1}_result2 = nil")
+ 	  end
         end
       end
 
@@ -88,7 +121,21 @@ class Game < ActiveRecord::Base
 	eval("game.frame0#{i+1}_state2 = nil")
       elsif game.send("frame0#{i+1}_result1") + game.send("frame0#{i+1}_result2") == 10
         eval("game.frame0#{i+1}_state1 = game.frame0#{i+1}_state1 || 'N'")
-        eval("game.frame0#{i+1}_state2 = '/'")
+	eval("game.frame0#{i+1}_state2 = '/'")
+      end
+    end
+
+    3.times do |j|
+      # deduce points from state (frame 10)
+      if [nil, 0].include? game.send("frame10_result#{j+1}")
+        case game.send("frame10_state#{j+1}")
+	when 'F'
+	  eval("game.frame10_result#{j+1} = 0")
+	when '/'
+	  eval("game.frame10_result#{j+1} = 10 - game.frame10_result#{j}")
+	when 'X'
+	  eval("game.frame10_result#{j+1} = 10")
+	end
       end
     end
 
@@ -121,8 +168,9 @@ class Game < ActiveRecord::Base
       game.frame10_result3 = nil
       game.frame10_state3 = nil
     end
+  end
 
-    # calculate points
+  def fill_aggregations(game)
     game.points = 0
     9.times do |i|
       game.points += game.send("frame%02d_result1" % (i+1).to_s)
@@ -139,18 +187,15 @@ class Game < ActiveRecord::Base
 	end
       elsif game.send("frame%02d_state2" % (i+1).to_s) == '/'
         game.points += game.send("frame%02d_result2" % (i+1).to_s)
-        game.points += game.send("frame%02d_result1" % (i+2).to_s)
+	game.points += game.send("frame%02d_result1" % (i+2).to_s)
       else
         game.points += game.send("frame%02d_result2" % (i+1).to_s)
       end
-      puts "frame #{i+1}, points #{game.points}"
     end
     game.points += game.frame10_result1
     game.points += game.frame10_result2
     game.points += game.frame10_result3 if game.frame10_result3
-    puts "frame 10, points #{game.points}"
 
-    # set aggregations
     state_methods = game.methods.keep_if { |n| n =~ /state[123]$/ }
     states = []
     state_methods.each { |name| states << game.send(name) }
@@ -168,22 +213,5 @@ class Game < ActiveRecord::Base
       game.cleared_splits += 1 if game.send("frame0#{i+1}_state1") == 'S' and game.send("frame0#{i+1}_state2") == '/'
     end
     game.cleared_splits += 1 if states[-3..-1].include?('S') and states[-3..1].include?('/')
-  }
-
-  def self.numbers_for_selection(match)
-    i = match.game.map(&:number).uniq.size + 1
-    Array(1..i)
-  end
-
-  def self.states_for_throw1_selection
-    %w{N S F X}.map { |s| [s] }
-  end
-
-  def self.states_for_throw2_selection
-    %w{N F /}.map { |s| [s] }
-  end
-
-  def self.states_for_frame10_selection
-    %w{N S F / X}.map { |s| [s] }
   end
 end
