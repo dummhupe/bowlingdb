@@ -66,6 +66,8 @@
 	<td class="text-center well <%= @state_mapping[game.frame10_state3] %>">
 	  <% if %w(/ X).include? game.frame10_state3 %>
 	    <%= game.frame10_state3 %>
+	  <% elsif game.frame10_result3 == 0 %>
+	    &ndash;
 	  <% else %>
 	    <%= game.frame10_result3 %>
 	  <% end %>
