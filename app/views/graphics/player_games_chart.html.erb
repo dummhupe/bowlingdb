@@ -25,9 +25,13 @@
       },
       tooltip: {
         formatter: function(){
-          var date_text = Highcharts.dateFormat("%d.%m.%Y", this.x*1000);
-	  var score_text = parseInt(this.y) + " Punkte";
-	  return date_text + ", Spiel " + this.point.game_nr + "<br/>" + this.series.name + ": " + score_text;
+	  var text = Highcharts.dateFormat("%d.%m.%Y", this.x*1000);
+	  if (this.point.game_nr){
+	    text += ", Spiel " + this.point.game_nr;
+	  }
+	  text += "<br/>";
+	  text += this.series.name + ": " + parseInt(this.y) + " Punkte";
+	  return text;
 	}
       },
       plotOptions: {

@@ -25,9 +25,16 @@
       },
       tooltip: {
         formatter: function(){
-          var first_line = Highcharts.dateFormat("%d.%m.%Y", this.x*1000) + ", " + this.series.name;
-	  var second_line = parseInt(this.y) + " Punkte, " + this.point.game_count + " Spiele";
-	  return first_line + "<br/>" + second_line;
+	  var text = Highcharts.dateFormat("%d.%m.%Y", this.x*1000) + ", " + this.series.name;
+	  text += "<br/>";
+	  text += parseInt(this.y) + " Punkte";
+	  if (this.point.game_count){
+  	    text += ", " + this.point.game_count + " Spiele";
+	  }
+	  if (this.point.location){
+	    text += "<br/>" + this.point.location;
+	  }
+	  return text;
 	}
       },
       plotOptions: {
@@ -66,7 +73,9 @@
 	      x: <%= game.match_day.match_day.to_datetime.to_i + 1 %>,
 	      y: <%= game.points %>,
 	      matchday_id: <%= game.match_day.id %>,
-	      game_count: <%= game.game_count %>
+	      game_count: <%= game.game_count %>,
+	      location: "<%= game.match_day.location.name %>",
+	      category: "<%= game.match_day.category.name %>"
 	    }
 	  <% end %>
 	]
