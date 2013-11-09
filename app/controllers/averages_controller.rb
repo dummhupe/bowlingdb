@@ -19,6 +19,6 @@ class AveragesController < ReportController
       @games << game
     end
 
-    @games = @games.sort { |a,b| b.points <=> a.points }.paginate(:page => params[:page])
+    @games = @games.sort_by{ |g| [-g.points, -g.number, -g.strikes, -g.spares, -g.cleared_splits, -g.cleared_frames, g.splits] }.paginate(:page => params[:page])
   end
 end

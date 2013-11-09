@@ -8,7 +8,7 @@ class HighscoresController < ReportController
     Game.joins(:match_day).select('player_id, MAX(points) AS points').where(:player_id => @player_restrictions, 'match_days.location_id' => @location_restrictions, 'match_days.category_id' => @category_restrictions).where('match_days.match_day >= ? AND match_days.match_day <= ?', @date_from_restriction.match_day, @date_to_restriction.match_day).group('player_id').each do |row|
       @games << Game.joins(:match_day).where(:player_id => row.player_id, :points => row.points).order('match_days.match_day DESC').first
     end
-    @games = @games.sort { |a,b| b.points <=> a.points }.paginate(:page => params[:page])
+    @games = @games.sort_by{ |g| [-g.points, -g.strikes, -g.spares, -g.cleared_splits, -g.cleared_frames, g.splits] }.paginate(:page => params[:page])
     render :results
   end
 
@@ -28,12 +28,13 @@ class HighscoresController < ReportController
       game.fouls = row.fouls
       @games << game
     end
-    @games = @games.sort { |a,b| b.points <=> a.points }.paginate(:page => params[:page])
+    @games = @games.sort_by{ |g| [-g.points, -g.strikes, -g.spares, -g.cleared_splits, -g.cleared_frames, g.splits] }.paginate(:page => params[:page])
     render :results
   end
 
   def by_games
-    @games = Game.joins(:match_day).where(:player_id => @player_restrictions, 'match_days.location_id' => @location_restrictions, 'match_days.category_id' => @category_restrictions).where('match_days.match_day >= ? AND match_days.match_day <= ?', @date_from_restriction.match_day, @date_to_restriction.match_day).order('points DESC').paginate(:page => params[:page])
+    @games = Game.joins(:match_day).where(:player_id => @player_restrictions, 'match_days.location_id' => @location_restrictions, 'match_days.category_id' => @category_restrictions).where('match_days.match_day >= ? AND match_days.match_day <= ?', @date_from_restriction.match_day, @date_to_restriction.match_day)
+    @games = @games.sort_by{ |g| [-g.points, -g.strikes, -g.spares, -g.cleared_splits, -g.cleared_frames, g.splits] }.paginate(:page => params[:page])
     render :results
   end
 end
