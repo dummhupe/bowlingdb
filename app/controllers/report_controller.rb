@@ -90,10 +90,16 @@ class ReportController < ApplicationController
   end
 
   def get_restrictions_as_sql
-    'player_id IN (' + @player_restrictions.join(',') + ')
-     AND location_id IN (' + @location_restrictions.join(',') + ')
-     AND category_id IN (' + @category_restrictions.join(',') + ')
+    'player_id IN (' + quote(@player_restrictions).join(',') + ')
+     AND location_id IN (' + quote(@location_restrictions).join(',') + ')
+     AND category_id IN (' + quote(@category_restrictions).join(',') + ')
      AND match_days.match_day >= \'' + @date_from_restriction.match_day.to_s + '\'
      AND match_days.match_day <= \'' + @date_to_restriction.match_day.to_s + '\''
+  end
+
+  def quote(array)
+    array.map do |i|
+      MatchDay.connection.quote(i)
+    end
   end
 end
