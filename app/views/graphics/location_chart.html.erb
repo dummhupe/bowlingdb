@@ -22,8 +22,12 @@
       },
       tooltip: {
         formatter: function(){
-	  var score_text = parseInt(this.y) + " Punkte";
-	  return this.series.name + ": " + score_text;
+	  var text = this.series.name + ": " + parseInt(this.y) + " Punkte";
+	  if (this.point.match_date){
+	    text += "<br/>" + this.point.match_date;
+	    text += ", " + this.point.game_count + " Spiele";
+	  }
+	  return text;
 	}
       },
       plotOptions: {
@@ -61,7 +65,9 @@
 	    <% isFirstDataPoint = false %>
 	    {
 	      y: <%= game.points %>,
-	      matchday_id: <%= game.match_day.id %>
+	      matchday_id: <%= game.match_day.id %>,
+	      match_date: "<%= game.match_day.match_day.strftime('%d.%m.%Y') %>",
+	      game_count: <%= game.game_count %>
 	    }
 	  <% end %>
 	]
