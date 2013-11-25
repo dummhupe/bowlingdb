@@ -212,9 +212,12 @@ class Game < ActiveRecord::Base
       end
     end
 
+    game.cleared_splits = 0
     9.times do |i|
       game.cleared_splits += 1 if game.send("frame0#{i+1}_state1") == 'S' and game.send("frame0#{i+1}_state2") == '/'
     end
-    game.cleared_splits += 1 if states[-3..-1].include?('S') and states[-3..1].include?('/')
+    if states[-3..-1].include?('S') and states[-3..1].include?('/')
+      game.cleared_splits += 1
+    end
   end
 end
