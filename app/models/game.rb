@@ -206,8 +206,11 @@ class Game < ActiveRecord::Base
     game.fouls = states.count('F')
     game.cleared_frames = states[0...-3].count('/')
     game.cleared_frames += states[0...-3].count('X')
-    game.cleared_frames += 1 if states[-3..-1].include?('/')
-    game.cleared_frames += 1 if states[-3..-1].include?('X')
+    if states[-3] == 'X' or states[-2] == '/'
+      if states[-1] == 'X' or states[-1] == '/'
+        game.cleared_frames += 1
+      end
+    end
 
     9.times do |i|
       game.cleared_splits += 1 if game.send("frame0#{i+1}_state1") == 'S' and game.send("frame0#{i+1}_state2") == '/'
