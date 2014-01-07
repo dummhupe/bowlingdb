@@ -45,7 +45,7 @@
         <td><%= game.player.full_name %></td>
 	<% 10.times do |i| %>
   	  <td class="text-center well <%= @state_mapping[game.send('frame%02d_state1' % (i+1).to_s)] %>">
-	    <% if %w(/ X).include? game.send("frame%02d_state1" % (i+1).to_s) %>
+	    <% if %w(F / X).include? game.send("frame%02d_state1" % (i+1).to_s) %>
 	      <%= game.send("frame%02d_state1" % (i+1).to_s) %>
 	    <% elsif game.send("frame%02d_result1" % (i+1).to_s) == 0 %>
 	      &ndash;
@@ -54,7 +54,7 @@
 	    <% end %>
 	  </td>
 	  <td class="text-center well <%= @state_mapping[game.send('frame%02d_state2' % (i+1).to_s)] %>">
-	    <% if %w(/ X).include? game.send("frame%02d_state2" % (i+1).to_s) %>
+	    <% if %w(F / X).include? game.send("frame%02d_state2" % (i+1).to_s) %>
 	      <%= game.send("frame%02d_state2" % (i+1).to_s) %>
 	    <% elsif game.send("frame%02d_result2" % (i+1).to_s) == 0 %>
 	      &ndash;
