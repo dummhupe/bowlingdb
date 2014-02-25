@@ -31,9 +31,9 @@
 	</label>
 	<label class="radio">
           <%= radio_button_tag(:date_mode, :exact, @date_mode == 'exact') %>
-          <%= select_tag(:date_from, options_for_select(MatchDay.order(:match_day).map { |d| [d.formatted_match_day, d.id] }, @date_from_restriction.id)) %>
+          <%= select_tag(:date_from, options_for_select(MatchDay.lower_dates_for_selection, @date_from_restriction.id)) %>
 	  -
-	  <%= select_tag(:date_to, options_for_select(MatchDay.order(:match_day).map { |d| [d.formatted_match_day, d.id] }, @date_to_restriction.id)) %>
+	  <%= select_tag(:date_to, options_for_select(MatchDay.upper_dates_for_selection, @date_to_restriction.id)) %>
 	</label>
       </td>
     </tr>

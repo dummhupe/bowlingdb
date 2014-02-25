@@ -12,4 +12,18 @@ class MatchDay < ActiveRecord::Base
   def formatted_match_day
     match_day.strftime("%d.%m.%Y")
   end
+
+  def self.lower_dates_for_selection
+    MatchDay.order(:match_day).group_by{ |m| m.formatted_match_day }.values.map do |m|
+      first = m.shift
+      [first.formatted_match_day, first.id]
+    end
+  end
+
+  def self.upper_dates_for_selection
+    MatchDay.order(:match_day).group_by{ |m| m.formatted_match_day }.values.map do |m|
+      last = m.pop
+      [last.formatted_match_day, last.id]
+    end
+  end
 end
