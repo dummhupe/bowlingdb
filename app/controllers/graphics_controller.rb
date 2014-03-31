@@ -78,7 +78,7 @@ class GraphicsController < ReportController
       end
       if @regression and @games[location_id] and @games[location_id].to_a.size >= 5
         scores = @games[location_id]
-	@regression_data[location_id] = regression((0..(scores.to_a.size-1)).map{|i| i}, scores.map{|g| g.points})
+	@regression_data[location_id] = regression(scores.map {|g| g.match_day.match_day.to_datetime.to_i }, scores.map {|g| g.points })
       end
     end
 
