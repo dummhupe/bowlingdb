@@ -1,0 +1,95 @@
+<%= render 'shared/graphics_location_restrictions' %>
+
+<script type="text/javascript" charset="utf-8">
+  $(function() {
+    new Highcharts.Chart({
+      chart: {
+        renderTo: "bowling_chart",
+	backgroundColor: "#FAFAFA"
+      },
+      title: {
+        text: ""
+      },
+      xAxis: {
+        labels: {
+	  enabled: false
+	}
+      },
+      yAxis: {
+        title: {
+	  text: "Punkte"
+	}
+      },
+      tooltip: {
+        formatter: function(){
+	  var text = this.series.name + " (" + this.point.location + "): " + parseInt(this.y) + " Punkte";
+	  if (this.point.match_date){
+	    text += "<br/>" + this.point.match_date;
+	    text += ", " + this.point.game_count + " Spiele";
+	  }
+	  return text;
+	}
+      },
+      plotOptions: {
+        series: {
+	  cursor: 'pointer',
+	  turboThreshold: <%= @nMaxSeriesPoints %>,
+	  point: {
+	    events: {
+	      click: function(){
+	        if (this.options.matchday_id != null){
+		  location.href = "/match_days/" + this.options.matchday_id;
+		}
+	      }
+	    }
+	  }
+	}
+      },
+      series: [
+      <% isFirstGame = true %>
+      <% @games.each do |category_id, scores| %>
+      <% next if scores.empty? %>
+        <% unless isFirstGame %>
+	  ,
+	<% end %>
+	<% isFirstGame = false %>
+      {
+        name: "<%= Category.find(category_id).name %>",
+	type: 'line',
+        data: [
+	  <% isFirstDataPoint = true %>
+	  <% scores.each do |game| %>
+	    <% unless isFirstDataPoint %>
+	      ,
+	    <% end %>
+	    <% isFirstDataPoint = false %>
+	    {
+	      y: <%= game.points %>,
+	      matchday_id: <%= game.match_day.id %>,
+	      match_date: "<%= game.match_day.match_day.strftime('%d.%m.%Y') %>",
+	      location: "<%= game.match_day.location.name %>",
+	      game_count: <%= game.game_count %>
+	    }
+	  <% end %>
+	]
+      }
+      <% if @regression_data[category_id] %>
+      ,{
+        type: 'line',
+	name: 'Regression: <%= Category.find(category_id).name %>',
+	marker: {
+	  enabled: false
+	},
+	data: (function(){
+	  return <%= @regression_data[category_id].inspect %>;
+	})()
+      }
+      <% end %>
+      <% end %>
+      ]
+    });
+  });
+</script>
+
+<div id="bowling_chart" style="height: <%= @graphics_height %>px"></div>
+
