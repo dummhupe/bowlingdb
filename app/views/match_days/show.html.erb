@@ -41,7 +41,7 @@
         </tr>
       <% end %>
       <tr>
-        <td rowspan="2"><%= game.player.full_name %></td>
+        <td rowspan="2" style="vertical-align: middle;"><%= game.player.full_name %></td>
 	<% 10.times do |i| %>
   	  <td class="text-center <%= @state_mapping[game.send('frame%02d_state1' % (i+1).to_s)] %>">
 	    <% if %w(F / X).include? game.send("frame%02d_state1" % (i+1).to_s) %>
@@ -78,8 +78,8 @@
 	<% sum[:overall] += game.points %>
 	<% count[game.player.id] += 1 %>
 
-	<td class="text-center well points" rowspan="2" style="vertical-align: bottom;"><%= sum[game.player.id] %></td>
-	<td class="text-center well points" rowspan="2" style="vertical-align: bottom;"><%= sum[game.player.id] / count[game.player.id] %></td>
+	<td class="text-center well points" rowspan="2" style="vertical-align: middle;"><%= sum[game.player.id] %></td>
+	<td class="text-center well points" rowspan="2" style="vertical-align: middle;"><%= sum[game.player.id] / count[game.player.id] %></td>
       </tr>
       <tr>
 	<% 1.upto(9) do |i| %>

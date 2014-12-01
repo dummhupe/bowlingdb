@@ -14,6 +14,6 @@
 /log/*.log
 /tmp
 
-Capfile
-config/deploy.rb
+#Capfile
+#config/deploy.rb
 deploy.sh
