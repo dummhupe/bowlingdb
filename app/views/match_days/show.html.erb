@@ -78,16 +78,14 @@
 	<% sum[:overall] += game.points %>
 	<% count[game.player.id] += 1 %>
 
-	<td></td>
-	<td></td>
+	<td class="text-center well points" rowspan="2" style="vertical-align: bottom;"><%= sum[game.player.id] %></td>
+	<td class="text-center well points" rowspan="2" style="vertical-align: bottom;"><%= sum[game.player.id] / count[game.player.id] %></td>
       </tr>
       <tr>
 	<% 1.upto(9) do |i| %>
 	<td colspan="2" class="text-right well points"><%= game.points_up_to_frame(i) %></td>
 	<% end %>
 	<td colspan="3" class="text-right well points"><%= game.points_up_to_frame(10) %></td>
-	<td class="text-center well points"><%= sum[game.player.id] %></td>
-	<td class="text-center well points"><%= sum[game.player.id] / count[game.player.id] %></td>
       </tr>
     <% end %>
     <tr>
