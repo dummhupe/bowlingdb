@@ -93,6 +93,38 @@ class Game < ActiveRecord::Base
     %w{N S F / X}.map { |s| [s] }
   end
 
+  def points_up_to_frame(n)
+    points = 0
+    counter = [n, 9].min
+    counter.times do |i|
+      points += send("frame%02d_result1" % (i+1).to_s)
+      if send("frame%02d_state1" % (i+1).to_s) == 'X'
+        points += send("frame%02d_result1" % (i+2).to_s)
+	if send("frame%02d_state1" % (i+2).to_s) == 'X'
+	  if i+2 == 10 # add second throw of tenth frame
+	    points += send("frame%02d_result2" % (i+2).to_s)
+	  else
+	    points += send("frame%02d_result1" % (i+3).to_s)
+	  end
+	else
+	  points += send("frame%02d_result2" % (i+2).to_s)
+	end
+      elsif send("frame%02d_state2" % (i+1).to_s) == '/'
+        points += send("frame%02d_result2" % (i+1).to_s)
+	points += send("frame%02d_result1" % (i+2).to_s)
+      else
+        points += send("frame%02d_result2" % (i+1).to_s)
+      end
+    end
+    if n > 9
+      points += frame10_result1
+      points += frame10_result2
+      points += frame10_result3 if frame10_result3
+    end
+
+    return points
+  end
+
   private
   def fill_points_and_states(game)
     9.times do |i|
@@ -171,30 +203,7 @@ class Game < ActiveRecord::Base
   end
 
   def fill_aggregations(game)
-    game.points = 0
-    9.times do |i|
-      game.points += game.send("frame%02d_result1" % (i+1).to_s)
-      if game.send("frame%02d_state1" % (i+1).to_s) == 'X'
-        game.points += game.send("frame%02d_result1" % (i+2).to_s)
-	if game.send("frame%02d_state1" % (i+2).to_s) == 'X'
-	  if i+2 == 10 # add second throw of tenth frame
-	    game.points += game.send("frame%02d_result2" % (i+2).to_s)
-	  else
-	    game.points += game.send("frame%02d_result1" % (i+3).to_s)
-	  end
-	else
-	  game.points += game.send("frame%02d_result2" % (i+2).to_s)
-	end
-      elsif game.send("frame%02d_state2" % (i+1).to_s) == '/'
-        game.points += game.send("frame%02d_result2" % (i+1).to_s)
-	game.points += game.send("frame%02d_result1" % (i+2).to_s)
-      else
-        game.points += game.send("frame%02d_result2" % (i+1).to_s)
-      end
-    end
-    game.points += game.frame10_result1
-    game.points += game.frame10_result2
-    game.points += game.frame10_result3 if game.frame10_result3
+    game.points = game.points_up_to_frame(10)
 
     state_methods = game.methods.keep_if { |n| n =~ /state[123]$/ }
     states = []
