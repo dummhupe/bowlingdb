@@ -15,15 +15,15 @@ class AveragesController < ReportController
       game = UntypedGame.new
       game.player = Player.find(row['player_id'])
       game.number = row['game_count']
-      game.points = '%.2f' % row['points'].round(2)
-      game.cleared_frames = '%.2f' % row['cleared_frames'].round(2)
-      game.strikes = '%.2f' % row['strikes'].round(2)
-      game.spares = '%.2f' % row['spares'].round(2)
-      game.splits = '%.2f' % row['splits'].round(2)
-      game.cleared_splits = '%.2f' % row['cleared_splits'].round(2)
-      game.fouls = '%.2f' % row['fouls'].round(2)
+      game.points = row['points']
+      game.cleared_frames = row['cleared_frames']
+      game.strikes = row['strikes']
+      game.spares = row['spares']
+      game.splits = row['splits']
+      game.cleared_splits = row['cleared_splits']
+      game.fouls = row['fouls']
       @games << game
     end
-    @games = @games.paginate(:page => params[:page])
+    @games = sort(@games).paginate(:page => params[:page])
   end
 end

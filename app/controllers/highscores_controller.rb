@@ -8,7 +8,7 @@ class HighscoresController < ReportController
     Game.joins(:match_day).select('player_id, MAX(points) AS points').where(:player_id => @player_restrictions, 'match_days.location_id' => @location_restrictions, 'match_days.category_id' => @category_restrictions).where('match_days.match_day >= ? AND match_days.match_day <= ?', @date_from_restriction.match_day, @date_to_restriction.match_day).group('player_id').each do |row|
       @games << Game.joins(:match_day).where(:player_id => row.player_id, :points => row.points).order('match_days.match_day DESC').first
     end
-    @games = @games.sort_by{ |g| [-g.points, -g.strikes, -g.spares, -g.cleared_splits, -g.cleared_frames, g.splits] }.paginate(:page => params[:page])
+    @games = sort(@games).paginate(:page => params[:page])
     render :results
   end
 
@@ -28,13 +28,13 @@ class HighscoresController < ReportController
       game.fouls = row.fouls
       @games << game
     end
-    @games = @games.sort_by{ |g| [-g.points, -g.strikes, -g.spares, -g.cleared_splits, -g.cleared_frames, g.splits] }.paginate(:page => params[:page])
+    @games = sort(@games).paginate(:page => params[:page])
     render :results
   end
 
   def by_games
     @games = Game.joins(:match_day).where(:player_id => @player_restrictions, 'match_days.location_id' => @location_restrictions, 'match_days.category_id' => @category_restrictions).where('match_days.match_day >= ? AND match_days.match_day <= ?', @date_from_restriction.match_day, @date_to_restriction.match_day)
-    @games = @games.sort_by{ |g| [-g.points, -g.strikes, -g.spares, -g.cleared_splits, -g.cleared_frames, g.splits] }.paginate(:page => params[:page])
+    @games = sort(@games).paginate(:page => params[:page])
     render :results
   end
 
@@ -51,16 +51,16 @@ class HighscoresController < ReportController
       game.number = row['game_count']
       game.match_day = MatchDay.find(row['match_day_id'])
       game.player = Player.find(row['player_id'])
-      game.points = '%.2f' % row['points'].round(2)
-      game.cleared_frames = '%.2f' % row['cleared_frames'].round(2)
-      game.strikes = '%.2f' % row['strikes'].round(2)
-      game.spares = '%.2f' % row['spares'].round(2)
-      game.splits = '%.2f' % row['splits'].round(2)
-      game.cleared_splits = '%.2f' % row['cleared_splits'].round(2)
-      game.fouls = '%.2f' % row['fouls'].round(2)
+      game.points = row['points']
+      game.cleared_frames = row['cleared_frames']
+      game.strikes = row['strikes']
+      game.spares = row['spares']
+      game.splits = row['splits']
+      game.cleared_splits = row['cleared_splits']
+      game.fouls = row['fouls']
       @games << game
     end
-    @games = @games.paginate(:page => params[:page])
-    render :results
+    @games = sort(@games).paginate(:page => params[:page])
+    render :results_avg
   end
 end

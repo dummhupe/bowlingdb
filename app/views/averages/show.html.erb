@@ -6,23 +6,23 @@
   <tr>
     <th>Spieler</th>
     <th class="text-center">Spiele</th>
-    <th class="text-center">Punkte</th>
-    <th class="text-center">Geräumt</th>
-    <th class="text-center">Strikes</th>
-    <th class="text-center">Spares</th>
-    <th class="text-center">Splits</th>
-    <th class="text-center">Fouls</th>
+    <th class="text-center"><%= sortable "points", "Punkte" %></th>
+    <th class="text-center"><%= sortable "cleared_frames", "Geräumt" %></th>
+    <th class="text-center"><%= sortable "strikes" %></th>
+    <th class="text-center"><%= sortable "spares" %></th>
+    <th class="text-center"><%= sortable "splits" %></th>
+    <th class="text-center"><%= sortable "fouls" %></th>
   </tr>
   <% @games.each do |game| %>
     <tr>
       <td><%= game.player.full_name %></td>
       <td class="text-center"><%= game.number %></td>
-      <td class="text-center"><%= game.points %></td>
-      <td class="text-center"><%= game.cleared_frames %></td>
-      <td class="text-center"><%= game.strikes %></td>
-      <td class="text-center"><%= game.spares %></td>
-      <td class="text-center"><%= game.splits %> (<%= game.cleared_splits %>)</td>
-      <td class="text-center"><%= game.fouls %></td>
+      <td class="text-center"><%= '%.2f' % game.points.round(2) %></td>
+      <td class="text-center"><%= '%.2f' % game.cleared_frames.round(2) %></td>
+      <td class="text-center"><%= '%.2f' % game.strikes.round(2) %></td>
+      <td class="text-center"><%= '%.2f' % game.spares.round(2) %></td>
+      <td class="text-center"><%= '%.2f' % game.splits.round(2) %> (<%= '%.2f' % game.cleared_splits.round(2) %>)</td>
+      <td class="text-center"><%= '%.2f' % game.fouls.round(2) %></td>
     </tr>
   <% end %>
 </table>
