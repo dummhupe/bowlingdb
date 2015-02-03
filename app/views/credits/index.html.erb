@@ -11,3 +11,57 @@
   <li><a href="http://rosettacode.org/wiki/Polynomial_regression#Ruby">Ausgleichskurve</a></li>
 </ul>
 </p>
+
+<h4>Statistiken</h4>
+<table>
+  <tr>
+    <td>Anzahl Spieler:</td>
+    <td><%= @stats[:player_count] %></td>
+  </tr>
+  <tr>
+    <td>Anzahl Spielorte:</td>
+    <td><%= @stats[:location_count] %></td>
+  </tr>
+  <tr>
+    <td>Erster Spieltag:</td>
+    <td>
+      <%= @stats[:first_match_day].formatted_match_day %> in <%= @stats[:first_match_day].location.name %>
+    </td>
+  </tr>
+  <tr>
+    <td>Letzter Spieltag:</td>
+    <td>
+      <%= @stats[:last_match_day].formatted_match_day %> in <%= @stats[:last_match_day].location.name %>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">Anzahl Spieltage:</td>
+    <td>
+      <table>
+        <% @stats[:match_day_count].each do |c| %>
+        <tr>
+	  <td><%= c[:category] %>:</td>
+	  <td align="right"><%= c[:count] %></td>
+	</tr>
+	<% end%>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td>Bestes Spiel:</td>
+    <td>
+      <%= @stats[:best_game].points %> Punkte 
+      von <%= link_to @stats[:best_game].player.full_name, '/highscores/by_games?date_mode=none' %> 
+      in <%= @stats[:best_game].match_day.location.name %> (<%= @stats[:best_game].match_day.category.name %>)
+      am <%= link_to @stats[:best_game].match_day.formatted_match_day, match_day_path(@stats[:best_game].match_day) %>
+    </td>
+  </tr>
+  <tr>
+    <td>Schlechtestes Spiel:</td>
+    <td>
+      <%= @stats[:worst_game].points %> Punkte 
+      von <%= link_to @stats[:worst_game].player.full_name, '/highscores/by_games?date_mode=none&direction=asc&sort=points' %> 
+      in <%= @stats[:worst_game].match_day.location.name %> (<%= @stats[:worst_game].match_day.category.name %>)
+      am <%= link_to @stats[:worst_game].match_day.formatted_match_day, match_day_path(@stats[:worst_game].match_day) %>
+  </tr>
+<table>
