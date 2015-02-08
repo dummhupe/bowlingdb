@@ -11,9 +11,54 @@
     <dd><%= @match_day.location.name %></dd>
   </dl>
 
+  <table class="table">
+    <tr>
+      <th colspan="99" class="text-left">Statistiken zum Spieltag</th>
+    </tr>
+    <tr>
+      <th>Spieler</th>
+      <th class="text-center well" colspan="2">Spiele</th>
+      <th class="text-center well" colspan="2">Strikes</th>
+      <th class="text-center well" colspan="2">Spares</th>
+      <th class="text-center well" colspan="4">Splits</th>
+      <th class="text-center well" colspan="2">Gutter</th>
+      <th class="text-center well" colspan="2">Fouls</th>
+      <th class="text-center well">&empty;</th>
+      <th class="text-center well">Serie</th>
+      <th class="text-center well">Höchstes Spiel</th>
+      <th class="text-center well">Niedrigstes Spiel</th>
+      <th class="text-center well">Differenz</th>
+    </tr>
+    <% @match_day.players.each do |p| %>
+    <tr>
+      <td><%= p.full_name %></td>
+      <td class="text-right" style="padding-right: 0px;"><%= p.games(@match_day).count %></td>
+      <td class="text-right" style="padding-left: 0px;"><%= p.games_share(@match_day) %> %</td>
+      <td class="text-right" style="padding-right: 0px;"><%= p.strikes(@match_day) %></td>
+      <td class="text-right" style="padding-left: 0px;"><%= p.strikes_share(@match_day) %> %</td>
+      <td class="text-right" style="padding-right: 0px;"><%= p.spares(@match_day) %></td>
+      <td class="text-right" style="padding-left: 0px;"><%= p.spares_share(@match_day) %> %</td>
+      <td class="text-right" style="padding-right: 0px";><%= p.splits(@match_day) %></td>
+      <td class="text-right" style="padding-left: 0px; padding-right: 0px;">(<%= p.cleared_splits(@match_day) %>)</td>
+      <td class="text-right" style="padding-left: 0px; padding-right: 0px;"><%= p.splits_share(@match_day) %> %</td>
+      <td class="text-right" style="padding-left: 0px;">(<%= p.cleared_splits_share(@match_day) %> %)</td>
+      <td class="text-right" style="padding-right: 0px;"><%= p.gutter(@match_day) %></td>
+      <td class="text-right" style="padding-left: 0px;"><%= p.gutter_share(@match_day) %> %</td>
+      <td class="text-right" style="padding-right: 0px;"><%= p.fouls(@match_day) %></td>
+      <td class="text-right" style="padding-left: 0px;"><%= p.fouls_share(@match_day) %> %</td>
+      <td class="text-right"><%= p.points(@match_day) / p.games(@match_day).length %></td>
+      <td class="text-right"><%= p.points(@match_day) %></td>
+      <td class="text-right"><%= p.high_game(@match_day) %></td>
+      <td class="text-right"><%= p.low_game(@match_day) %></td>
+      <td class="text-right"><%= p.high_game(@match_day) - p.low_game(@match_day) %></td>
+    </tr>
+    <% end %>
+  </table>
+  
   <% current_game = 0 %>
   <% sum = {} %>
   <% count = {} %>
+  <% throws = {} %>
   <% @match_day.game.each do |game| %>
     <% if game.number != current_game %>
       <% if current_game > 0 %>

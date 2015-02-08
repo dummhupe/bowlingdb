@@ -13,6 +13,14 @@ class MatchDay < ActiveRecord::Base
     match_day.strftime("%d.%m.%Y")
   end
 
+  def players
+    result = []
+    game.each do |g|
+      result << g.player
+    end
+    result.uniq
+  end
+
   def self.lower_dates_for_selection
     MatchDay.order(:match_day).group_by{ |m| m.formatted_match_day }.values.map do |m|
       first = m.shift
