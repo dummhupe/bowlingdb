@@ -75,7 +75,12 @@ class Player < ActiveRecord::Base
   end
 
   def cleared_splits_share(match_day)
-    (cleared_splits(match_day) * 100.0 / splits(match_day)).floor
+    splits_count = splits(match_day)
+    if splits_count > 0 
+      return (cleared_splits(match_day) * 100.0 / splits_count).floor
+    else
+      return 0
+    end
   end
 
   def gutter(match_day)
