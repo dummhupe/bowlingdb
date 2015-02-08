@@ -107,6 +107,10 @@ class Player < ActiveRecord::Base
     (fouls(match_day) * 100.0 / throws_count(match_day)).floor
   end
 
+  def average(match_day)
+    points(match_day) / games(match_day).count
+  end
+
   def high_game(match_day)
     result = 0
     games(match_day).each do |g|

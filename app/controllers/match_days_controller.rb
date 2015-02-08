@@ -18,5 +18,32 @@ class MatchDaysController < ApplicationController
       '/' => 'spare',
       'X' => 'strike'
     }
+
+    @extrema = {}
+    [:strikes, :spares, :average, :cleared_splits, :points, :high_game, :low_game].each do |cstic|
+      @extrema[cstic] = 0
+      @match_day.players.each do |p|
+        value = p.send(cstic, @match_day) 
+	if @extrema[cstic] < value
+	  @extrema[cstic] = value
+	end
+      end
+    end
+    [:splits, :gutter, :fouls].each do |cstic|
+      @extrema[cstic] = 999999
+      @match_day.players.each do |p|
+        value = p.send(cstic, @match_day)
+	if @extrema[cstic] > value
+	  @extrema[cstic] = value
+	end
+      end
+    end
+    @extrema[:diff] = 999999
+    @match_day.players.each do |p|
+      value = p.high_game(@match_day) - p.low_game(@match_day)
+      if @extrema[:diff] > value
+        @extrema[:diff] = value
+      end
+    end
   end
 end
