@@ -1,0 +1,55 @@
+<div id="bowling_player_chart_<%= player.id %>" style="height: <%= @graphics_height %>px;"></div>
+
+<script type="text/javascript" charset="utf-8">
+  $(function(){
+    new Highcharts.Chart({
+      chart: {
+        renderTo: "bowling_player_chart_<%= player.id %>",
+	backgroundColor: "#FAFAFA"
+      },
+      title: {
+        text: "<%= player.full_name %>"
+      },
+      xAxis: {
+        allowDecimals: false,
+	tickInterval: 1,
+	title: {
+	  text: "Frame"
+	}
+      },
+      yAxis: {
+        title: {
+	  text: "Punkte"
+	}
+      },
+      credits: {
+        enabled: false
+      },
+      tooltip: {
+        shared: true,
+	useHTML: true,
+	headerFormat: '<table>',
+	pointFormat: '<tr><td><span style="color: {series.color}">\u25CF</span> {series.name}:</td><td>&nbsp;</td><td style="text-align: right;">{point.y}</td></tr>',
+	footerFormat: '</table>'
+      },
+      series: [
+      <% isFirst = true %>
+      <% player.games(match_day).each do |game| %>
+        <%= "," unless isFirst %>
+        {
+	  type: "line",
+	  name: "Spiel <%= game.number %>",
+	  data: [
+	    <% isFirst = true %>
+	    <% 1..10.times do |i| %>
+  	      <%= "," unless isFirst %>
+              [ <%= i+1 %>,<%= game.points_up_to_frame(i+1) %> ]
+	      <% isFirst = false %>
+	    <% end %>
+	  ]
+	}
+      <% end %>
+      ]
+    });
+  })
+</script>

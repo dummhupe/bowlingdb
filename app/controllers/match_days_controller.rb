@@ -48,4 +48,7 @@ class MatchDaysController < ApplicationController
       end
     end
   end
+
+  def show_charts
+  end
 end
