@@ -38,7 +38,7 @@ class Player < ActiveRecord::Base
       game_count[g.player] += 1
     end
 
-    (games(match_day).count * 100.0 / game_count.values.max).floor
+    (games(match_day).count * 100.0 / game_count.values.max).round
   end
 
   def strikes(match_day)
@@ -46,8 +46,8 @@ class Player < ActiveRecord::Base
   end
 
   def strikes_share(match_day)
-    possible_strikes = frames_count(match_day)
-    (strikes(match_day) * 100.0 / possible_strikes).floor
+    possible_strikes = games(match_day).count * 12
+    (strikes(match_day) * 100.0 / possible_strikes).round
   end
 
   def spares(match_day)
@@ -57,7 +57,26 @@ class Player < ActiveRecord::Base
   def spares_share(match_day)
     # in every frame only one spare is possible
     possible_spares = games(match_day).count * 10
-    (spares(match_day) * 100.0 / possible_spares).floor
+    (spares(match_day) * 100.0 / possible_spares).round
+  end
+
+  def open(match_day)
+    result = 0
+    games(match_day).each do |g|
+      1..9.times do |i|
+        if g.send("frame%02d_state1" % (i+1).to_s) == 'X' or g.send("frame%02d_state2" % (i+1).to_s) == '/'
+	else
+	  result += 1
+	end
+      end
+      result += 1 unless ["X","/"].include? g.frame10_state3
+    end
+    return result
+  end
+
+  def open_share(match_day)
+    possible_open_frames = games(match_day).count * 10
+    (open(match_day) * 100.0 / possible_open_frames).round
   end
 
   def splits(match_day)
@@ -65,9 +84,12 @@ class Player < ActiveRecord::Base
   end
 
   def splits_share(match_day)
-    # in tenth frame only two splits can be thrown
-    possible_splits = frames_count(match_day) - games(match_day).count
-    (splits(match_day) * 100.0 / possible_splits).floor
+    possible_splits = games(match_day).count * 10
+    # add one for each tenth frame with three throws
+    games(match_day).each do |g|
+      possible_splits += 1 if g.frame10_result3
+    end
+    (splits(match_day) * 100.0 / possible_splits).round
   end
 
   def cleared_splits(match_day)
@@ -77,7 +99,7 @@ class Player < ActiveRecord::Base
   def cleared_splits_share(match_day)
     splits_count = splits(match_day)
     if splits_count > 0 
-      return (cleared_splits(match_day) * 100.0 / splits_count).floor
+      return (cleared_splits(match_day) * 100.0 / splits_count).round
     else
       return 0
     end
@@ -96,7 +118,7 @@ class Player < ActiveRecord::Base
   end
 
   def gutter_share(match_day)
-    (gutter(match_day) * 100.0  / throws_count(match_day)).floor
+    (gutter(match_day) * 100.0  / throws_count(match_day)).round
   end
 
   def fouls(match_day)
@@ -104,7 +126,7 @@ class Player < ActiveRecord::Base
   end
 
   def fouls_share(match_day)
-    (fouls(match_day) * 100.0 / throws_count(match_day)).floor
+    (fouls(match_day) * 100.0 / throws_count(match_day)).round
   end
 
   def average(match_day)
@@ -146,16 +168,5 @@ class Player < ActiveRecord::Base
       throws += 1 if g.frame10_result3
     end
     return throws
-  end
-
-  def frames_count(match_day)
-    result = games(match_day).count * 10
-    # add one for each tenth frame
-    result += games(match_day).count
-    # add one for each tenth frame with three throws
-    games(match_day).each do |g|
-      result += 1 if g.frame10_result3
-    end
-    return result
   end
 end
