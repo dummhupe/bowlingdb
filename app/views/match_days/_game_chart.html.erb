@@ -34,10 +34,25 @@
 	footerFormat: '</table>'
       },
       series: [
+        {
+	  type: "line",
+	  name: "100",
+	  dashStyle: "Dash",
+	  color: new Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0.3).get(),
+	  data: [[1,10],[2,20],[3,30],[4,40],[5,50],[6,60],[7,70],[8,80],[9,90],[10,100]],
+	  visible: true
+	},
+	{
+	  type: "line",
+	  name: "200",
+	  dashStyle: "Dash",
+	  color: new Highcharts.Color(Highcharts.getOptions().colors[1]).setOpacity(0.3).get(),
+	  data: [[1,20],[2,40],[3,60],[4,80],[5,100],[6,120],[7,140],[8,160],[9,180],[10,200]],
+	  visible: true
+	}
       <% isFirst = true %>
       <% match_day.game.where(:number => game_number).each do |game| %>
-        <%= "," unless isFirst %>
-        {
+        ,{
 	  type: "line",
 	  name: "<%= game.player.full_name %>",
 	  data: [
