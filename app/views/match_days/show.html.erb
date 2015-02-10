@@ -20,7 +20,7 @@
       <th class="text-center well" colspan="2">Spiele</th>
       <th class="text-center well" colspan="2">Strikes</th>
       <th class="text-center well" colspan="2">Spares</th>
-      <th class="text-center well" colspan="4">Splits</th>
+      <th class="text-center well" colspan="4">Splits (geräumt)</th>
       <th class="text-center well" colspan="2">Offen</th>
       <th class="text-center well" colspan="2">Gutter</th>
       <th class="text-center well" colspan="2">Fouls</th>
@@ -41,9 +41,9 @@
       <td class="text-right <%= "well summary-hl-left" if p.spares(@match_day) == @extrema[:spares] %>" style="padding-right: 0px;"><%= p.spares(@match_day) %></td>
       <td class="text-right <%= "well summary-hl-right" if p.spares(@match_day) == @extrema[:spares] %>" style="padding-left: 0px;"><%= p.spares_share(@match_day) %>&nbsp;%</td>
       <td class="text-right <%= "well summary-hl-left" if p.splits(@match_day) == @extrema[:splits] %>" style="padding-right: 0px";><%= p.splits(@match_day) %></td>
-      <td class="text-right <%= "well summary-hl-right summary-hl-left" if p.splits(@match_day) == @extrema[:splits] %>" style="padding-left: 0px; padding-right: 0px;">(<%= p.cleared_splits(@match_day) %>)</td>
-      <td class="text-right <%= "well summary-hl-right summary-hl-left" if p.splits(@match_day) == @extrema[:splits] %>" style="padding-left: 0px; padding-right: 0px;"><%= p.splits_share(@match_day) %>&nbsp;%</td>
-      <td class="text-right <%= "well summary-hl-right" if p.splits(@match_day) == @extrema[:splits] %>" style="padding-left: 0px;">(<%= p.cleared_splits_share(@match_day) %>&nbsp;%)</td>
+      <td class="text-right <%= "well summary-hl-right" if p.splits(@match_day) == @extrema[:splits] %>" style="padding-left: 0px;"><%= p.splits_share(@match_day) %>&nbsp;%</td>
+      <td class="text-right <%= "well summary-hl-left" if p.cleared_splits(@match_day) == @extrema[:cleared_splits] %>" style="padding-right: 0px;">(<%= p.cleared_splits(@match_day) %></td>
+      <td class="text-right <%= "well summary-hl-right" if p.cleared_splits(@match_day) == @extrema[:cleared_splits] %>" style="padding-left: 0px;"><%= p.cleared_splits_share(@match_day) %>&nbsp;%)</td>
       <td class="text-right <%= "well summary-hl-left" if p.open(@match_day) == @extrema[:open] %>" style="padding-right: 0px;"><%= p.open(@match_day) %></td>
       <td class="text-right <%= "well summary-hl-right" if p.open(@match_day) == @extrema[:open] %>" style="padding-left: 0px;"><%= p.open_share(@match_day) %>&nbsp;%</td>
       <td class="text-right <%= "well summary-hl-left" if p.gutter(@match_day) == @extrema[:gutter] %>" style="padding-right: 0px;"><%= p.gutter(@match_day) %></td>
