@@ -31,7 +31,7 @@ class MatchDaysController < ApplicationController
       end
     end
     # minima
-    [:splits, :gutter, :fouls, :open].each do |cstic|
+    [:splits, :gutter, :fouls, :open, :throws].each do |cstic|
       @extrema[cstic] = 999999
       @match_day.players.each do |p|
         value = p.send(cstic, @match_day)

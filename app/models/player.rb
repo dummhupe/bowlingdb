@@ -118,7 +118,7 @@ class Player < ActiveRecord::Base
   end
 
   def gutter_share(match_day)
-    (gutter(match_day) * 100.0  / throws_count(match_day)).round
+    (gutter(match_day) * 100.0  / throws(match_day)).round
   end
 
   def fouls(match_day)
@@ -126,7 +126,7 @@ class Player < ActiveRecord::Base
   end
 
   def fouls_share(match_day)
-    (fouls(match_day) * 100.0 / throws_count(match_day)).round
+    (fouls(match_day) * 100.0 / throws(match_day)).round
   end
 
   def average(match_day)
@@ -149,16 +149,7 @@ class Player < ActiveRecord::Base
     return result
   end
 
-  private
-  def sum_state(match_day, cstic)
-    result = 0
-    games(match_day).each do |g|
-      result += g.send(cstic)
-    end
-    return result
-  end
-
-  def throws_count(match_day)
+  def throws(match_day)
     throws = 0
     games(match_day).each do |g|
       1..10.times do |i|
@@ -168,5 +159,14 @@ class Player < ActiveRecord::Base
       throws += 1 if g.frame10_result3
     end
     return throws
+  end
+
+  private
+  def sum_state(match_day, cstic)
+    result = 0
+    games(match_day).each do |g|
+      result += g.send(cstic)
+    end
+    return result
   end
 end

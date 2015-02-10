@@ -24,6 +24,7 @@
       <th class="text-center well" colspan="2">Offen</th>
       <th class="text-center well" colspan="2">Gutter</th>
       <th class="text-center well" colspan="2">Fouls</th>
+      <th class="text-center well">Würfe</th>
       <th class="text-center well">Serie</th>
       <th class="text-center well">&empty;</th>
       <th class="text-center well">Höchstes Spiel</th>
@@ -49,6 +50,7 @@
       <td class="text-right <%= "well summary-hl-right" if p.gutter(@match_day) == @extrema[:gutter] %>" style="padding-left: 0px;"><%= p.gutter_share(@match_day) %>&nbsp;%</td>
       <td class="text-right <%= "well summary-hl-left" if p.fouls(@match_day) == @extrema[:fouls] %>" style="padding-right: 0px;"><%= p.fouls(@match_day) %></td>
       <td class="text-right <%= "well summary-hl-right" if p.fouls(@match_day) == @extrema[:fouls] %>" style="padding-left: 0px;"><%= p.fouls_share(@match_day) %>&nbsp;%</td>
+      <td class="text-right <%= "well" if p.throws(@match_day) == @extrema[:throws] %>"><%= p.throws(@match_day) %></td>
       <td class="text-right <%= "well" if p.points(@match_day) == @extrema[:points] %>"><%= p.points(@match_day) %></td>
       <td class="text-right <%= "well" if p.average(@match_day) == @extrema[:average] %>"><%= p.average(@match_day) %></td>
       <td class="text-right <%= "well" if p.high_game(@match_day) == @extrema[:high_game] %>"><%= p.high_game(@match_day) %></td>
