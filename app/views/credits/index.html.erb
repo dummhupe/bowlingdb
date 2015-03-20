@@ -25,13 +25,13 @@
   <tr>
     <td>Erster Spieltag:</td>
     <td>
-      <%= @stats[:first_match_day].formatted_match_day %> in <%= @stats[:first_match_day].location.name %>
+      <%= link_to @stats[:first_match_day].formatted_match_day, match_day_path(@stats[:first_match_day]) %> in <%= @stats[:first_match_day].location.name %>
     </td>
   </tr>
   <tr>
     <td>Letzter Spieltag:</td>
     <td>
-      <%= @stats[:last_match_day].formatted_match_day %> in <%= @stats[:last_match_day].location.name %>
+      <%= link_to @stats[:last_match_day].formatted_match_day, match_day_path(@stats[:last_match_day]) %> in <%= @stats[:last_match_day].location.name %>
     </td>
   </tr>
   <tr>
