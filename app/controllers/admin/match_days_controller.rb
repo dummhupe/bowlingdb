@@ -2,7 +2,7 @@ class Admin::MatchDaysController < Admin::BaseController
   WillPaginate.per_page = 5
 
   def index
-    @match_days = MatchDay.order('match_day DESC').paginate(:page => params[:page])
+    @match_days = MatchDay.order('match_day DESC, id DESC').paginate(:page => params[:page])
   end
 
   def new
