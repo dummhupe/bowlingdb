@@ -225,7 +225,7 @@ class Game < ActiveRecord::Base
     9.times do |i|
       game.cleared_splits += 1 if game.send("frame0#{i+1}_state1") == 'S' and game.send("frame0#{i+1}_state2") == '/'
     end
-    if states[-3..-1].include?('S') and states[-3..-1].include?('/')
+    if (states[-3] == 'S' and states[-2] == '/') or (states[-2] == 'S' and states[-1] == '/')
       game.cleared_splits += 1
     end
   end
