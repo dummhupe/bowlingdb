@@ -130,7 +130,7 @@ class Player < ActiveRecord::Base
   end
 
   def average(match_day)
-    points(match_day) / games(match_day).count
+    (points(match_day) / games(match_day).count).round
   end
 
   def high_game(match_day)
@@ -159,6 +159,10 @@ class Player < ActiveRecord::Base
       throws += 1 if g.frame10_result3
     end
     return throws
+  end
+
+  def average_throws(match_day)
+    (throws(match_day) / games(match_day).count).round
   end
 
   private

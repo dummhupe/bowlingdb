@@ -21,30 +21,50 @@ class MatchDaysController < ApplicationController
 
     @extrema = {}
     # maxima
-    [:strikes, :spares, :average, :cleared_splits, :points, :high_game, :low_game].each do |cstic|
+    ['strikes', 'spares', 'average', 'cleared_splits', 'points', 'high_game', 'low_game'].each do |cstic|
+      cstic_share = cstic + '_share'
       @extrema[cstic] = 0
+      @extrema[cstic_share] = 0
       @match_day.players.each do |p|
         value = p.send(cstic, @match_day) 
-	if @extrema[cstic] < value
-	  @extrema[cstic] = value
-	end
+      	if @extrema[cstic] < value
+      	  @extrema[cstic] = value
+        end
+
+        begin
+          share = p.send(cstic_share, @match_day)
+          if @extrema[cstic_share] < share
+            @extrema[cstic_share] = share
+          end
+        rescue NoMethodError
+      	end
       end
     end
     # minima
-    [:splits, :gutter, :fouls, :open, :throws].each do |cstic|
+    ['splits', 'gutter', 'fouls', 'open', 'throws', 'average_throws'].each do |cstic|
+      cstic_share = cstic + '_share'
       @extrema[cstic] = 999999
+      @extrema[cstic_share] = 100
       @match_day.players.each do |p|
         value = p.send(cstic, @match_day)
-	if @extrema[cstic] > value
-	  @extrema[cstic] = value
-	end
+      	if @extrema[cstic] > value
+      	  @extrema[cstic] = value
+        end
+
+        begin
+          share = p.send(cstic_share, @match_day)
+          if @extrema[cstic_share] > share
+            @extrema[cstic_share] = share
+          end
+        rescue NoMethodError
+      	end
       end
     end
-    @extrema[:diff] = 999999
+    @extrema['diff'] = 999999
     @match_day.players.each do |p|
       value = p.high_game(@match_day) - p.low_game(@match_day)
-      if @extrema[:diff] > value
-        @extrema[:diff] = value
+      if @extrema['diff'] > value
+        @extrema['diff'] = value
       end
     end
   end
