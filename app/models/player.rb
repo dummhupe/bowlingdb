@@ -162,7 +162,7 @@ class Player < ActiveRecord::Base
   end
 
   def average_throws(match_day)
-    (throws(match_day) / games(match_day).count).round
+    (throws(match_day).to_f / games(match_day).count).round(2)
   end
 
   private
