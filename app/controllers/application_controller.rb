@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :set_locale
+  before_filter :track_event
 
   helper_method :sort_column, :sort_direction
 
@@ -21,7 +22,12 @@ class ApplicationController < ActionController::Base
     100
   end
 
+  def track_event
+    ahoy.track "#{controller_name}##{action_name}", :group => :user, :params => params
+  end
+
   private
+
   def sort(games)
     games.sort_by{ |g|
       if Game.column_names.include?(params[:sort])

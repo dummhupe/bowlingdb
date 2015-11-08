@@ -1,0 +1,122 @@
+<div class="row-fluid">
+  <div class="span4">
+    <dl>
+      <dt>Visit started at</dt>
+      <dd><%= @visit.started_at.to_s %></dd>
+    </dl>
+    <dl>
+      <dt>IP Address</dt>
+      <dd><%= @visit.ip %></dd>
+    </dl>
+    <dl>
+      <dt>User</dt>
+      <dd><%= @visit.user ? link_to(@visit.user.display_name, edit_user_path(@visit.user)) : '-' %></dd>
+    </dl>
+    <dl>
+      <dt>User Agent</dt>
+      <dd><%= @visit.user_agent || '-' %></dd>
+    </dl>
+    <dl>
+      <dt>Landing Page</dt>
+      <dd><%= @visit.landing_page || '-' %></dd>
+    </dl>
+    <dl>
+      <dt>Referrer</dt>
+      <dd><%= @visit.referrer || '-' %></dd>
+    </dl>
+    <dl>
+      <dt>Referring Domain</dt>
+      <dd><%= @visit.referring_domain || '-' %></dd>
+    </dl>
+    <dl>
+      <dt>Search Keyword</dt>
+      <dd><%= @visit.search_keyword || '-' %></dd>
+    </dl>
+  </div>
+
+  <div class="span4">
+    <dl>
+      <dt>Browser</dt>
+      <dd><%= @visit.browser || '-' %></dd>
+    </dl>
+    <dl>
+      <dt>Operating System</dt>
+      <dd><%= @visit.os || '-' %></dd>
+    </dl>
+    <dl>
+      <dt>Device Type</dt>
+      <dd><%= @visit.device_type || '-' %></dd>
+    </dl>
+    <dl>
+      <dt>Screen Height</dt>
+      <dd><%= @visit.screen_height || '-' %></dd>
+    </dl>
+    <dl>
+      <dt>Screen Width</dt>
+      <dd><%= @visit.screen_width || '-' %></dd>
+    </dl>
+    <dl>
+      <dt>Country</dt>
+      <dd><%= @visit.country || '-' %></dd>
+    </dl>
+    <dl>
+      <dt>Region</dt>
+      <dd><%= @visit.region || '-' %></dd>
+    </dl>
+    <dl>
+      <dt>City</dt>
+      <dd><%= @visit.city || '-' %></dd>
+    </dl>
+  </div>
+
+  <div class="span4">
+    <dl>
+      <dt>UTM Source</dt>
+      <dd><%= @visit.utm_source || '-' %></dd>
+    </dl>
+    <dl>
+      <dt>UTM Medium</dt>
+      <dd><%= @visit.utm_medium || '-' %></dd>
+    </dl>
+    <dl>
+      <dt>UTM Term</dt>
+      <dd><%= @visit.utm_term || '-' %></dd>
+    </dl>
+    <dl>
+      <dt>UTM Content</dt>
+      <dd><%= @visit.utm_content || '-' %></dd>
+    </dl>
+    <dl>
+      <dt>UTM Campaign</dt>
+      <dd><%= @visit.utm_campaign || '-' %></dd>
+    </dl>
+  </div>
+</div>
+
+<% ['user_events', 'admin_events'].each do |relation| %>
+  <% data = @visit.send(relation).order(:time) %>
+  <% next if data.empty? %>
+<div class="row-fluid">
+  <div class="span12">
+    <table class="table">
+      <tr>
+        <th colspan="3">
+          Gruppe: <%= relation.titleize %>
+        </th>
+      </tr>
+      <tr>
+        <th>Time</th>
+        <th>Name</th>
+        <th>Properties</th>
+      </tr>
+      <% data.each do |e| %>
+        <tr>
+          <td><%= e.time.to_s %></td>
+          <td><%= e.name %></td>
+          <td><%= e.properties.inspect %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+<% end %>

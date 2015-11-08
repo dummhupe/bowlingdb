@@ -1,6 +1,7 @@
 Bowlingdb::Application.routes.draw do
   namespace "admin" do
     resources :categories, :locations, :players
+    resources :stats, :only => [:index, :show]
     resources :match_days do
       resources :games
     end

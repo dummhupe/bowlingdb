@@ -12,4 +12,5 @@
 //
 //= require jquery
 //= require twitter/bootstrap
+//= require ahoy
 //= require_tree .
