@@ -10,7 +10,7 @@
     <th></th>
   </tr>
   <% @visits.each do |v| %>
-  <tr>
+  <tr class="<%= "well" if v.admin_events.count == 0 %>">
     <td><%= v.started_at.to_s %></td>
     <td><%= v.landing_page %></td>
     <td><%= v.ip %></td>
