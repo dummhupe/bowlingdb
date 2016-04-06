@@ -94,11 +94,17 @@ class PlayerController < ReportController
   def date_to_key
     :player_date_to
   end
+  def regression_key
+    :player_regression
+  end
   def player_default
     params[:id]
   end
   def date_mode_default
     'none'
+  end
+  def regression_default
+    true
   end
 
   private

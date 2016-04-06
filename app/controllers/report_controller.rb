@@ -5,12 +5,12 @@ class ReportController < ApplicationController
       session[location_key] = session[category_key] = session[player_key] = session[date_mode_key] = session[:regression] = session[date_from_key] = session[date_to_key] = nil
     end
 
-    if params.include? :regression
-      @regression = params[:regression] == "true"
-    elsif session.include? :regression
-      @regression = session[:regression]
+    if params.include? regression_key
+      @regression = params[regression_key] == "true"
+    elsif session.include? regression_key
+      @regression = session[regression_key]
     else
-      @regression = false
+      @regression = regression_default
     end
 
     @location_restrictions = params[location_key] || session[location_key] || location_default
@@ -52,7 +52,7 @@ class ReportController < ApplicationController
     session[date_mode_key]  = @date_mode
     session[date_from_key]  = date_from
     session[date_to_key]    = date_to
-    session[:regression] = @regression
+    session[regression_key] = @regression
 
     @graphics_height = session[:graphics_height] || get_default_graphics_height
   end
@@ -120,6 +120,9 @@ class ReportController < ApplicationController
   def date_to_key
     :date_to
   end
+  def regression_key
+    :regression
+  end
   def location_default
     Location.select(:id).uniq.map { |l| l.id }
   end
@@ -137,5 +140,8 @@ class ReportController < ApplicationController
   end
   def date_to_default
     nil
+  end
+  def regression_default
+    false
   end
 end
