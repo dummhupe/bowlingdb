@@ -18,7 +18,7 @@
   </tr>
   <% @games.each do |game| %>
     <tr>
-      <td><%= game.player.full_name %></td>
+      <td><%= link_to game.player.full_name, player_path(game.player) %></td>
       <td class="text-center"><%= game.number %></td>
       <td class="text-center"><%= game.points %></td>
       <td class="text-center"><%= game.cleared_frames %></td>

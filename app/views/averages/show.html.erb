@@ -15,7 +15,7 @@
   </tr>
   <% @games.each do |game| %>
     <tr>
-      <td><%= game.player.full_name %></td>
+      <td><%= link_to game.player.full_name, player_path(game.player) %></td>
       <td class="text-center"><%= game.number %></td>
       <td class="text-center"><%= '%.2f' % game.points.round(2) %></td>
       <td class="text-center"><%= '%.2f' % game.cleared_frames.round(2) %></td>
