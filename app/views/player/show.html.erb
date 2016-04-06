@@ -1,0 +1,209 @@
+<%= render 'shared/player_restrictions' %>
+
+<div class="row-fluid">
+  <div class="span6">
+    <table class="table">
+      <tr>
+        <th colspan="99" class="text-left">Top 5</th>
+      </tr>
+      <tr>
+        <th>Punkte</th>
+        <th>Beschreibung</th>
+        <th>Ort</th>
+        <th>Datum</th>
+      </tr>
+      <% @games[:top].each do |g| %>
+        <tr>
+          <td><%= g.points %></td>
+          <td><%= g.match_day.category.name %></td>
+          <td><%= g.match_day.location.name %></td>
+          <td><%= link_to g.match_day.formatted_match_day, match_day_path(g.match_day) %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+  <div class="span6">
+    <table class="table">
+      <tr>
+        <th colspan="99" class="text-left">Low 5</th>
+      </tr>
+      <tr>
+        <th>Punkte</th>
+        <th>Beschreibung</th>
+        <th>Ort</th>
+        <th>Datum</th>
+      </tr>
+      <% @games[:low].each do |g| %>
+        <tr>
+          <td><%= g.points %></td>
+          <td><%= g.match_day.category.name %></td>
+          <td><%= g.match_day.location.name %></td>
+          <td><%= link_to g.match_day.formatted_match_day, match_day_path(g.match_day) %></td>
+        </tr>
+      <% end %>
+      </table>
+  </div>
+</div>
+
+<div class="row-fluid">
+  <div class="span6">
+    <table class="table">
+      <tr>
+        <th colspan="99">Highscores</th>
+      </tr>
+      <% {:points => 'Punkte', :cleared_frames => 'Geräumt', :strikes => 'Strikes', :spares => 'Spares', :splits => 'Splits', :fouls => 'Fouls' }.each do |key, label| %>
+      <tr>
+        <th><%= label %></th>
+        <td><%= @games[:max][key].send(key) %></td>
+        <td><%= @games[:max][key].match_day.category.name %></td>
+        <td><%= @games[:max][key].match_day.location.name %></td>
+        <td><%= link_to @games[:max][key].match_day.formatted_match_day, match_day_path(@games[:max][key].match_day) %></td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+  <div class="span6">
+    <table class="table">
+      <tr>
+        <th colspan="99">Lowscores</th>
+      </tr>
+      <% {:points => 'Punkte', :cleared_frames => 'Geräumt', :strikes => 'Strikes', :spares => 'Spares', :splits => 'Splits', :fouls => 'Fouls' }.each do |key, label| %>
+      <tr>
+        <th><%= label %></th>
+        <td><%= @games[:min][key].send(key) %></td>
+        <td><%= @games[:min][key].match_day.category.name %></td>
+        <td><%= @games[:min][key].match_day.location.name %></td>
+        <td><%= link_to @games[:min][key].match_day.formatted_match_day, match_day_path(@games[:min][key].match_day) %></td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<div class="row-fluid">
+  <div class="span12">
+    <table class="table">
+      <tr>
+        <th colspan="99">Durchschnitte</th>
+      </tr>
+      <tr>
+        <th class="text-center">Spiele</th>
+        <th class="text-center">Punkte</th>
+        <th class="text-center">Geräumt</th>
+        <th class="text-center">Strikes</th>
+        <th class="text-center">Spares</th>
+        <th class="text-center">Splits</th>
+        <th class="text-center">Fouls</th>
+      </tr>
+      <tr>
+        <td class="text-center"><%= @games[:avg].number %></td>
+        <td class="text-center"><%= '%.2f' % @games[:avg].points.round(2) %></td>
+        <td class="text-center"><%= '%.2f' % @games[:avg].cleared_frames.round(2) %></td>
+        <td class="text-center"><%= '%.2f' % @games[:avg].strikes.round(2) %></td>
+        <td class="text-center"><%= '%.2f' % @games[:avg].spares.round(2) %></td>
+        <td class="text-center"><%= '%.2f' % @games[:avg].splits.round(2) %> (<%= '%.2f' % @games[:avg].cleared_splits.round(2) %>)</td>
+        <td class="text-center"><%= '%.2f' % @games[:avg].fouls.round(2) %></td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="row-fluid">
+  <div class="span12">
+    <script type="text/javascript" charset="utf-8">
+      $(function() {
+        new Highcharts.Chart({
+          chart: {
+            renderTo: "bowling_chart",
+            backgroundColor: "#FAFAFA"
+          },
+          credits: {
+            enabled: false
+          },
+          title: {
+            text: ""
+          },
+          xAxis: {
+            type: "datetime",
+            labels: {
+              formatter: function(){
+                return Highcharts.dateFormat("%d.%m.%Y", this.value*1000);
+              }
+            }
+          },
+          yAxis: {
+            title: {
+            text: "Punkte"
+          }
+        },
+        tooltip: {
+          formatter: function(){
+            var text = Highcharts.dateFormat("%d.%m.%Y", this.x*1000) + ", " + this.series.name;
+            text += "<br/>";
+            text += parseInt(this.y) + " Punkte";
+            if (this.point.game_count){
+              text += ", " + this.point.game_count + " Spiele";
+            }
+            if (this.point.location){
+              text += "<br/>" + this.point.location;
+            }
+            return text;
+          }
+        },
+        plotOptions: {
+          series: {
+            cursor: 'pointer',
+            turboThreshold: <%= @games[:chart][:max_series_points] %>,
+            point: {
+              events: {
+                click: function(){
+                  if (this.options.matchday_id != null){
+                    location.href = "/match_days/" + this.options.matchday_id;
+                  }
+                }
+              }
+            }
+          }
+        },
+        series: [
+            {
+              type: 'line',
+              name: "<%= @games[:top].first.player.full_name %>",
+              data: [
+                <% isFirst = true %>
+                <% @games[:chart][:chart].each do |game| %>
+                  <% unless isFirst %>
+                    ,
+                  <% end %>
+                  <% isFirst = false %>
+                  {
+                    x: <%= game.match_day.match_day.to_datetime.to_i + 1 %>,
+                    y: <%= game.points %>,
+                    matchday_id: <%= game.match_day.id %>,
+                    game_count: <%= game.game_count %>,
+                    location: "<%= game.match_day.location.name %>",
+                    category: "<%= game.match_day.category.name %>"
+                  }
+                <% end %>
+                ]
+              }
+              <% if @games[:chart][:regression] %>
+                ,{
+                  type: 'line',
+                  name: 'Regression: <%= @games[:top].first.player.full_name %>',
+                  marker: {
+                    enabled: false
+                  },
+                  data: (function(){
+                    return <%= @games[:chart][:regression].inspect %>;
+                  })()
+                }
+              <% end %>
+          ]
+        });
+      });
+    </script>
+
+    <div id="bowling_chart" style="height: <%= @graphics_height %>px"></div>
+  </div>
+</div>

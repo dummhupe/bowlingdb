@@ -1,8 +1,8 @@
 class ReportController < ApplicationController
   before_filter do |controller|
     if params[:reset]
-      params[:location] = params[:category] = params[:player] = params[:date_mode] = params[:regression] = params[:date_from] = params[:date_to] = nil
-      session[:location] = session[:category] = session[:player] = session[:date_mode] = session[:regression] = session[:date_from] = session[:date_to] = nil
+      params[location_key] = params[category_key] = params[player_key] = params[date_mode_key] = params[:regression] = params[date_from_key] = params[date_to_key] = nil
+      session[location_key] = session[category_key] = session[player_key] = session[date_mode_key] = session[:regression] = session[date_from_key] = session[date_to_key] = nil
     end
 
     if params.include? :regression
@@ -13,18 +13,16 @@ class ReportController < ApplicationController
       @regression = false
     end
 
-
-
-    @location_restrictions = params[:location] || session[:location] || Location.select(:id).uniq.map { |l| l.id }
-    @category_restrictions = params[:category] || session[:category] || Category.select(:id).uniq.map { |c| c.id }
-    @player_restrictions = params[:player] || session[:player] || Player.select(:id).uniq.map { |p| p.id }
+    @location_restrictions = params[location_key] || session[location_key] || location_default
+    @category_restrictions = params[category_key] || session[category_key] || category_default
+    @player_restrictions = params[player_key] || session[player_key] || player_default
     if not @player_restrictions.kind_of? Array
       @player_restrictions = [@player_restrictions]
     end
 
-    @date_mode = params[:date_mode] || session[:date_mode] || 'halfyear'
-    date_from  = params[:date_from] || session[:date_from] || nil
-    date_to    = params[:date_to]   || session[:date_to]   || nil
+    @date_mode = params[date_mode_key] || session[date_mode_key] || date_mode_default
+    date_from  = params[date_from_key] || session[date_from_key] || date_from_default
+    date_to    = params[date_to_key]   || session[date_to_key]   || date_to_default
     case @date_mode
     when 'none' then
       @date_from_restriction = MatchDay.order(:match_day).first
@@ -48,12 +46,12 @@ class ReportController < ApplicationController
 
     end
 
-    session[:location]   = @location_restrictions
-    session[:category]   = @category_restrictions
-    session[:player]     = @player_restrictions
-    session[:date_mode]  = @date_mode
-    session[:date_from]  = date_from
-    session[:date_to]    = date_to
+    session[location_key]   = @location_restrictions
+    session[category_key]   = @category_restrictions
+    session[player_key]     = @player_restrictions
+    session[date_mode_key]  = @date_mode
+    session[date_from_key]  = date_from
+    session[date_to_key]    = date_to
     session[:regression] = @regression
 
     @graphics_height = session[:graphics_height] || get_default_graphics_height
@@ -101,5 +99,43 @@ class ReportController < ApplicationController
     array.map do |i|
       MatchDay.connection.quote(i)
     end
+  end
+
+  protected
+  def location_key
+    :location
+  end
+  def category_key
+    :category
+  end
+  def player_key
+    :player
+  end
+  def date_mode_key
+    :date_mode
+  end
+  def date_from_key
+    :date_from
+  end
+  def date_to_key
+    :date_to
+  end
+  def location_default
+    Location.select(:id).uniq.map { |l| l.id }
+  end
+  def category_default
+    Category.select(:id).uniq.map { |c| c.id }
+  end
+  def player_default
+    Player.select(:id).uniq.map { |p| p.id }
+  end
+  def date_mode_default
+    'halfyear'
+  end
+  def date_from_default
+    nil
+  end
+  def date_to_default
+    nil
   end
 end

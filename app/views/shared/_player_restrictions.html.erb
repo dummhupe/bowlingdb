@@ -1,0 +1,49 @@
+<%= form_tag "/#{controller_name}/#{@player_restrictions.first}", :method => :get do %>
+  <table cellpadding="5">
+    <tr class="text-left">
+      <th>Spielorte</th>
+      <th>Kategorien</th>
+      <th>Spieltage</th>
+    </tr>
+    <tr>
+      <td>
+        <%= select_tag(:player_location, options_for_select(Location.locations_for_selection, @location_restrictions), { :multiple => true, :size => 10 }) %>
+      </td>
+      <td>
+        <%= select_tag(:player_category, options_for_select(Category.categories_for_selection, @category_restrictions), { :multiple => true, :size => 10 }) %>
+      </td>
+      <td>
+        <label class="radio">
+          <%= radio_button_tag(:player_date_mode, :none, @date_mode == 'none') %>Alle Spieltermine
+	</label>
+	<label class="radio">
+          <%= radio_button_tag(:player_date_mode, :year, @date_mode == 'year') %>Letztes Jahr
+	</label>
+        <label class="radio">
+          <%= radio_button_tag(:player_date_mode, :halfyear, @date_mode == 'halfyear') %>Letztes Halbjahr
+	</label>
+	<label class="radio">
+          <%= radio_button_tag(:player_date_mode, :quarter, @date_mode == 'quarter') %>Letztes Quartal
+	</label>
+	<label class="radio">
+          <%= radio_button_tag(:player_date_mode, :exact, @date_mode == 'exact') %>
+          <%= select_tag(:player_date_from, options_for_select(MatchDay.lower_dates_for_selection, @date_from_restriction.id)) %>
+	  -
+	  <%= select_tag(:player_date_to, options_for_select(MatchDay.upper_dates_for_selection, @date_to_restriction.id)) %>
+	</label>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="4">
+        <label class="checkbox">
+	  <%= hidden_field_tag(:regression, false) %>
+	  <%= check_box_tag(:regression, true, @regression) %> Ausgleichskurve (ab fünf Datenpunkten)
+	</label>
+      </td>
+    </tr>
+  </table>
+  <div class="btn-group">
+    <%= submit_tag 'Übernehmen', :class => "btn btn-primary" %>
+    <%= submit_tag 'Zurücksetzen', :name => 'reset', :class => "btn" %>
+  </div>
+<% end %>

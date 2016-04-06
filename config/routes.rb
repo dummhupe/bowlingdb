@@ -13,6 +13,8 @@ Bowlingdb::Application.routes.draw do
     end
   end
 
+  resources :player, :only => [:show]
+
   match ':controller(/:action)'
 
   root :to => 'match_days#latest'

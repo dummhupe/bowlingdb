@@ -32,7 +32,7 @@
     </tr>
     <% @match_day.players.each do |p| %>
     <tr>
-      <td><%= p.full_name %></td>
+      <td><%= link_to p.full_name, player_path(p) %></td>
       <td class="text-right"><%= p.games(@match_day).count %></td>
       <td class="text-right"><%= p.games_share(@match_day) %>&nbsp;%</td>
       <td class="text-right <%= "well summary-hl-left" if p.strikes_share(@match_day) == @extrema['strikes_share'] %>"><%= p.strikes(@match_day) %></td>
@@ -91,7 +91,7 @@
         </tr>
       <% end %>
       <tr>
-        <td rowspan="2" style="vertical-align: middle;"><%= game.player.full_name %></td>
+        <td rowspan="2" style="vertical-align: middle;"><%= link_to game.player.full_name, player_path(game.player) %></td>
 	<% 10.times do |i| %>
   	  <td class="text-center <%= @state_mapping[game.send('frame%02d_state1' % (i+1).to_s)] %>">
 	    <% if %w(F / X).include? game.send("frame%02d_state1" % (i+1).to_s) %>
