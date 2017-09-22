@@ -1,8 +1,9 @@
 class ReportController < ApplicationController
   before_filter do |controller|
     if params[:reset]
-      params[location_key] = params[category_key] = params[date_mode_key] = params[:regression] = params[date_from_key] = params[date_to_key] = nil
-      session[location_key] = session[category_key] = session[player_key] = session[date_mode_key] = session[:regression] = session[date_from_key] = session[date_to_key] = nil
+      puts "***** resetting *****"
+      params[player_key] = params[location_key] = params[category_key] = params[date_mode_key] = params[:regression] = params[date_from_key] = params[date_to_key] = nil
+      session[player_key] = session[location_key] = session[category_key] = session[player_key] = session[date_mode_key] = session[:regression] = session[date_from_key] = session[date_to_key] = nil
     end
 
     if params.include? regression_key
