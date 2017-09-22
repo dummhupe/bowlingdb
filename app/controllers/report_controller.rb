@@ -14,8 +14,11 @@ class ReportController < ApplicationController
     end
 
     @location_restrictions = params[location_key] || session[location_key] || location_default
+    @location_restrictions = location_default if @location_restrictions.empty?
     @category_restrictions = params[category_key] || session[category_key] || category_default
+    @category_restrictions = category_default if @category_restrictions.empty?
     @player_restrictions = params[player_key] || session[player_key] || player_default
+    @player_restrictions = player_default if @player_restrictions.empty?
     if not @player_restrictions.kind_of? Array
       @player_restrictions = [@player_restrictions]
     end

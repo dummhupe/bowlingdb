@@ -54,7 +54,7 @@
     <td>Bestes Spiel:</td>
     <td>
       <%= @stats[:best_game].points %> Punkte 
-      von <%= link_to @stats[:best_game].player.full_name, '/highscores/by_games?date_mode=none' %> 
+      von <%= link_to @stats[:best_game].player.full_name, '/highscores/by_games?date_mode=none&player=&location=&category=' %> 
       in <%= @stats[:best_game].match_day.location.name %> (<%= @stats[:best_game].match_day.category.name %>)
       am <%= link_to @stats[:best_game].match_day.formatted_match_day, match_day_path(@stats[:best_game].match_day) %>
     </td>
@@ -63,7 +63,7 @@
     <td>Schlechtestes Spiel:</td>
     <td>
       <%= @stats[:worst_game].points %> Punkte 
-      von <%= link_to @stats[:worst_game].player.full_name, '/highscores/by_games?date_mode=none&direction=asc&sort=points' %> 
+      von <%= link_to @stats[:worst_game].player.full_name, '/highscores/by_games?date_mode=none&direction=asc&sort=points&player=&location=&category=' %> 
       in <%= @stats[:worst_game].match_day.location.name %> (<%= @stats[:worst_game].match_day.category.name %>)
       am <%= link_to @stats[:worst_game].match_day.formatted_match_day, match_day_path(@stats[:worst_game].match_day) %>
   </tr>
