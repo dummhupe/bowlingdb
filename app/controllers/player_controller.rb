@@ -7,6 +7,7 @@ class PlayerController < ReportController
     @games[:min] = get_min_scores
     @games[:avg] = get_avg_scores
     @games[:chart] = get_chart_data
+    @current_player = Player.find(@player_restrictions.first)
   end
 
   def get_max_scores
